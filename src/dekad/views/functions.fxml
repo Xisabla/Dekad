@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="dekad.controllers.FunctionsController"
       prefHeight="975" prefWidth="520">
 
-    <Text text="Functions"/>
+    <TextField fx:id="function" text="cos(x)" onAction="#draw">
+        <VBox.margin>
+            <Insets right="30" left="30" top="30" bottom="30"/>
+        </VBox.margin>
+    </TextField>
+
+    <Button onAction="#draw" text="Plot" prefWidth="2000">
+        <VBox.margin>
+            <Insets right="30" left="30" top="30" bottom="30"/>
+        </VBox.margin>
+    </Button>
 
 </VBox>

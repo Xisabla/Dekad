@@ -5,13 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import org.mariuszgromada.math.mxparser.Argument;
+import org.mariuszgromada.math.mxparser.Expression;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import static java.lang.Math.PI;
-import static java.lang.Math.sin;
 
 public class GraphController implements Initializable {
-
 
     @FXML
     private LineChart<Double, Double> chart;
@@ -29,14 +29,14 @@ public class GraphController implements Initializable {
 
         graph = new Graph(chart);
 
-        graph.plot(x -> {
-            if(x == 0) return (double) 1;
-            return sin(PI*x)/(PI*x);
-        }, -10, 10);
+        Argument x = new Argument("x");
+        Expression e = new Expression("sinc(x)", x);
+
+        graph.plot(e, -10, 10);
 
         xAxis.setLowerBound(-10);
         xAxis.setUpperBound(10);
-        yAxis.setLowerBound(-0.5);
+        yAxis.setLowerBound(-1.1);
         yAxis.setUpperBound(1.1);
 
     }
