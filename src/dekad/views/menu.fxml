@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="dekad.controllers.Menu"
+            prefHeight="25" prefWidth="1920">
+
+    <MenuBar prefHeight="25" prefWidth="1920">
+
+        <Menu text="File">
+            <!--<MenuItem text="New"/>
+            <MenuItem text="Open"/>
+            <SeparatorMenuItem/>
+            <MenuItem text="Save"/>
+            <MenuItem text="Save As"/>
+            <MenuItem text="Export"/>
+            <SeparatorMenuItem/>-->
+            <MenuItem text="Exit" onAction="#exit"/>
+        </Menu>
+
+        <!--<Menu text="Edit">
+            <MenuItem text="Todo"/>
+        </Menu>
+
+        <Menu text="Functions">
+            <MenuItem text="Todo"/>
+        </Menu>
+
+        <Menu text="Variables">
+            <MenuItem text="Todo"/>
+        </Menu>
+
+        <Menu text="Settings">
+            <MenuItem text="Preference"/>
+        </Menu>
+
+        <Menu text="Help">
+            <MenuItem text="Documentation"/>
+            <SeparatorMenuItem/>
+            <MenuItem text="About"/>
+        </Menu>-->
+
+    </MenuBar>
+
+</AnchorPane>

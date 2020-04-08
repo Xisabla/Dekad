@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dekad.controllers.App"
+      prefHeight="1000" prefWidth="1920">
+
+    <fx:include source="menu.fxml"/>
+
+    <HBox prefHeight="975">
+
+        <fx:include source="functions.fxml"/>
+        <fx:include source="graph.fxml"/>
+
+    </HBox>
+</VBox>
