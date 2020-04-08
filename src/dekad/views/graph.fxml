@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.Cursor?>
 
-<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="dekad.controllers.App"
-            prefHeight="975" prefWidth="1400"
-            style="-fx-background-color: gray;">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dekad.controllers.GraphController"
+      prefHeight="975" prefWidth="1400">
 
-    <Text text="Graph"/>
+    <LineChart fx:id="chart"
+               createSymbols="false"
+               legendVisible="false"
+               animated="false"
+               prefHeight="975" prefWidth="1400">
+
+        <xAxis>
+            <NumberAxis fx:id="xAxis" autoRanging="false" side="BOTTOM"/>
+        </xAxis>
+
+        <yAxis>
+            <NumberAxis fx:id="yAxis" autoRanging="false" side="LEFT"/>
+        </yAxis>
+
+        <cursor>
+            <Cursor fx:constant="CROSSHAIR"/>
+        </cursor>
+
+    </LineChart>
 
 </VBox>

@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Functions implements Initializable {
+public class FunctionsController implements Initializable {
 
 
     @Override
