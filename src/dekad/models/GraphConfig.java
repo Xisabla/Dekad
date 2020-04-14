@@ -12,6 +12,8 @@ public class GraphConfig {
 
     private double offset = 0.01;
 
+    private double computingOffset = 0.5;
+
     private boolean autoYBounds = true;
 
     private double autoYBoundsFactor = 1.1;
@@ -54,6 +56,14 @@ public class GraphConfig {
 
     public void setOffset(final double offset) {
         this.offset = offset;
+    }
+
+    public double getComputingOffset() {
+        return computingOffset;
+    }
+
+    public void setComputingOffset(double computingOffset) {
+        this.computingOffset = computingOffset;
     }
 
     public boolean hasAutoYBounds() {

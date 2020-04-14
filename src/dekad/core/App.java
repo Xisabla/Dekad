@@ -1,6 +1,7 @@
 package dekad.core;
 
 import dekad.controllers.GraphController;
+import dekad.controllers.MenuController;
 import dekad.models.GraphConfig;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import java.io.IOException;
 @SuppressWarnings("PMD.ShortClassName")
 public class App extends Application {
 
+    public static MenuController menuController;
     public static GraphController graphController;
     public static GraphConfig graphConfig = new GraphConfig();
 
@@ -31,6 +33,7 @@ public class App extends Application {
 
     public static void updateControllers() {
 
+        if(menuController == null) menuController = MenuController.menuController;
         if(graphController == null) graphController = GraphController.graphController;
 
     }

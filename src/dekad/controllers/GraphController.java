@@ -8,12 +8,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static java.lang.Double.*;
 
 public class GraphController implements Initializable {
 
@@ -28,6 +31,11 @@ public class GraphController implements Initializable {
     private double yMin;
     private double yMax;
 
+    private Graph graph;
+
+    private double lastDragX = NaN;
+    private double lastDragY = NaN;
+
     @FXML
     private LineChart<Double, Double> chart;
 
@@ -36,8 +44,6 @@ public class GraphController implements Initializable {
 
     @FXML
     private NumberAxis yAxis;
-
-    private Graph graph;
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
@@ -61,6 +67,9 @@ public class GraphController implements Initializable {
         functions.add(new MathFunction("sinc(x)"));
         update();
 
+        chart.setOnMouseDragged(this::handleChartMouseDragged);
+        chart.setOnMouseReleased(this::handleChartMouseRelease);
+
         System.out.println("Graph Controller loaded.");
 
     }
@@ -74,10 +83,7 @@ public class GraphController implements Initializable {
     public void updateBounds() {
 
         if (graphConfig.hasAutoYBounds()) {
-            processYBounds();
-        } else {
-            yMin = graphConfig.getYMin();
-            yMax = graphConfig.getYMax();
+            computeYBounds();
         }
 
         xAxis.setLowerBound(xMin);
@@ -103,7 +109,18 @@ public class GraphController implements Initializable {
 
     }
 
-    public void processYBounds() {
+    public void setBounds(double xMin, double xMax, double yMin, double yMax) {
+
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.yMin = yMin;
+        this.yMax = yMax;
+
+        update();
+
+    }
+
+    private void computeYBounds() {
 
         if (functions.isEmpty()) {
 
@@ -139,6 +156,64 @@ public class GraphController implements Initializable {
             yMin = Collections.max(min) * graphConfig.getAutoYBoundsFactor();
 
         }
+
+    }
+
+    private void handleChartMouseDragged(MouseEvent event) {
+
+        if(!isNaN(lastDragX)) {
+
+            // Remove the axis width (~= 0.05% of the total chart width)
+            double chartWidth = chart.getWidth() * 0.95;
+            double chartHeight = chart.getHeight() * 0.95;
+            double graphWidth = xMax - xMin;
+            double graphHeight = yMax - yMin;
+            // Compute ratio between the Graph Bounds and the Chart Width
+            double widthRatio = graphWidth / chartWidth;
+            double heightRatio = graphHeight / chartHeight;
+
+            // Compute the difference with the last event
+            double chartDiffX = (lastDragX - event.getX());
+            double chartDiffY = (event.getY() - lastDragY);
+
+            // Compute the Graph Bounds changes
+            double graphDiffX = chartDiffX * widthRatio;
+            double graphDiffY = chartDiffY * heightRatio;
+
+            // Lower the precision during the process to avoid lags
+            // TODO: Calculate offset depending on the Graph Width
+            // TODO: Then change computingOffset to computingOffsetRatio to allow
+            //  the user to get more points while computing changes
+            graph.setOffset(graphConfig.getComputingOffset());
+
+            xMin += graphDiffX;
+            xMax += graphDiffX;
+            yMin += graphDiffY;
+            yMax += graphDiffY;
+
+            update();
+
+            // Reset the precision
+            graph.setOffset(graphConfig.getOffset());
+
+            System.out.println(event.getY());
+
+        } else {
+
+            // Automatically disable Auto Y Bounds
+            App.menuController.forceAutoYBounds(false);
+
+        }
+
+        lastDragX = event.getX();
+        lastDragY = event.getY();
+
+    }
+
+    private void handleChartMouseRelease(MouseEvent event) {
+
+        lastDragX = NaN;
+        update();
 
     }
 

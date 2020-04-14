@@ -34,8 +34,10 @@
         </Menu>-->
 
         <Menu text="Settings">
-            <CheckMenuItem fx:id="toggleAutoYBoundsCheckbox" text="Automatic Y Bounds" onAction="#toggleAutoYBounds"/>
+            <CheckMenuItem fx:id="autoYBoundsCheckbox" text="Automatic Y Bounds" onAction="#toggleAutoYBounds"/>
+            <MenuItem text="Reset bounds to preset" onAction="#resetBounds"/>
             <!--<MenuItem text="Preference"/>-->
+            <!-- TODO: Bounds preset -->
         </Menu>
 
         <!--
