@@ -12,7 +12,7 @@ public class GraphConfig {
 
     private double offset = 0.01;
 
-    private double computingOffset = 0.5;
+    private double computingOffsetRatio = 20;
 
     private boolean autoYBounds = true;
 
@@ -58,12 +58,12 @@ public class GraphConfig {
         this.offset = offset;
     }
 
-    public double getComputingOffset() {
-        return computingOffset;
+    public double getComputingOffsetRatio() {
+        return computingOffsetRatio;
     }
 
-    public void setComputingOffset(double computingOffset) {
-        this.computingOffset = computingOffset;
+    public void setComputingOffsetRatio(double computingOffsetRatio) {
+        this.computingOffsetRatio = computingOffsetRatio;
     }
 
     public boolean hasAutoYBounds() {

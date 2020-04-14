@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class GraphController implements Initializable {
 
         chart.setOnMouseDragged(this::handleChartMouseDragged);
         chart.setOnMouseReleased(this::handleChartMouseRelease);
+        chart.setOnScroll(this::handleChartScroll);
 
         System.out.println("Graph Controller loaded.");
 
@@ -103,8 +105,17 @@ public class GraphController implements Initializable {
 
     public void update() {
 
+        update(true);
+
+    }
+
+    public void update(boolean doesComputeOffset) {
+
         graph.clear();
         updateBounds();
+
+        if (doesComputeOffset) computeOffset();
+
         updateFunctions();
 
     }
@@ -159,9 +170,22 @@ public class GraphController implements Initializable {
 
     }
 
+    private void computeOffset() {
+
+        double offset = graph.getOffset();
+        double baseWidth = graphConfig.getYMax() - graphConfig.getXMin();
+        double currentWidth = xMax - xMin;
+        double ratio = currentWidth / baseWidth;
+
+        graph.setOffset(graphConfig.getOffset() * ratio);
+
+        System.out.println(offset + " --> " + graph.getOffset());
+
+    }
+
     private void handleChartMouseDragged(MouseEvent event) {
 
-        if(!isNaN(lastDragX)) {
+        if (!isNaN(lastDragX)) {
 
             // Remove the axis width (~= 0.05% of the total chart width)
             double chartWidth = chart.getWidth() * 0.95;
@@ -181,22 +205,17 @@ public class GraphController implements Initializable {
             double graphDiffY = chartDiffY * heightRatio;
 
             // Lower the precision during the process to avoid lags
-            // TODO: Calculate offset depending on the Graph Width
-            // TODO: Then change computingOffset to computingOffsetRatio to allow
-            //  the user to get more points while computing changes
-            graph.setOffset(graphConfig.getComputingOffset());
+            double baseOffset = graph.getOffset();
+            graph.setOffset(baseOffset * graphConfig.getComputingOffsetRatio());
 
             xMin += graphDiffX;
             xMax += graphDiffX;
             yMin += graphDiffY;
             yMax += graphDiffY;
 
-            update();
+            update(false);
 
-            // Reset the precision
-            graph.setOffset(graphConfig.getOffset());
-
-            System.out.println(event.getY());
+            graph.setOffset(baseOffset);
 
         } else {
 
@@ -213,7 +232,32 @@ public class GraphController implements Initializable {
     private void handleChartMouseRelease(MouseEvent event) {
 
         lastDragX = NaN;
-        update();
+        update(true);
+
+    }
+
+    private void handleChartScroll(ScrollEvent event) {
+
+        App.menuController.forceAutoYBounds(false);
+
+        // TODO: Replace 0.7 by GraphConfig.getZoomRatio()
+        if (event.getDeltaY() > 0) {
+
+            xMin *= 0.7;
+            xMax *= 0.7;
+            yMin *= 0.7;
+            yMax *= 0.7;
+
+        } else {
+
+            xMin /= 0.7;
+            xMax /= 0.7;
+            yMin /= 0.7;
+            yMax /= 0.7;
+
+        }
+
+        update(true);
 
     }
 
