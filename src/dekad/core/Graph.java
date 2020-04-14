@@ -78,9 +78,6 @@ public class Graph {
 
         instance.setChart(chart);
 
-        System.out.println(chart);
-        System.out.println(instance.getChart());
-
         return instance;
 
     }
