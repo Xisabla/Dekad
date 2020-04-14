@@ -9,7 +9,7 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(location);
+        System.out.println("Menu Controller loaded.");
     }
 
     public void exit() {

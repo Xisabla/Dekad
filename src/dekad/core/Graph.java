@@ -1,32 +1,32 @@
 package dekad.core;
 
+import dekad.models.MathFunction;
 import javafx.scene.chart.XYChart;
-import org.mariuszgromada.math.mxparser.Expression;
 
 public class Graph {
 
     private static Graph single_instance = null;
-    private XYChart<Double, Double> graph;
+    private XYChart<Double, Double> chart;
     private double offset;
 
-    public Graph(final XYChart<Double, Double> graph) {
-        this.graph = graph;
+    public Graph(final XYChart<Double, Double> chart) {
+        this.chart = chart;
         this.offset = 0.01;
         Graph.single_instance = this;
     }
 
-    public Graph(final XYChart<Double, Double> graph, double offset) {
-        this.graph = graph;
+    public Graph(final XYChart<Double, Double> chart, double offset) {
+        this.chart = chart;
         this.offset = offset;
         Graph.single_instance = this;
     }
 
-    public XYChart<Double, Double> getGraph() {
-        return graph;
+    public XYChart<Double, Double> getChart() {
+        return chart;
     }
 
-    public void setGraph(XYChart<Double, Double> graph) {
-        this.graph = graph;
+    public void setChart(XYChart<Double, Double> chart) {
+        this.chart = chart;
     }
 
     public double getOffset() {
@@ -37,18 +37,17 @@ public class Graph {
         this.offset = offset;
     }
 
-    public void plot(final Expression e, double min, double max) {
+    public void plot(MathFunction mathFunction, double min, double max) {
 
         final XYChart.Series<Double, Double> series = new XYChart.Series<>();
 
         for (double x = min; x <= max; x += offset) {
 
-            e.setArgumentValue("x", x);
-            plotPoint(x, e.calculate(), series);
+            plotPoint(x, mathFunction.eval(x), series);
 
         }
 
-        graph.getData().add(series);
+        chart.getData().add(series);
 
     }
 
@@ -60,7 +59,7 @@ public class Graph {
 
     public void clear() {
 
-        graph.getData().clear();
+        chart.getData().clear();
 
     }
 
@@ -70,6 +69,19 @@ public class Graph {
             single_instance = new Graph(null, 0.01);
 
         return single_instance;
+
+    }
+
+    public static Graph getInstance(final XYChart<Double, Double> chart) {
+
+        Graph instance = getInstance();
+
+        instance.setChart(chart);
+
+        System.out.println(chart);
+        System.out.println(instance.getChart());
+
+        return instance;
 
     }
 
