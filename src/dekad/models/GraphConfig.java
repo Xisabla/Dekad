@@ -14,7 +14,7 @@ public class GraphConfig {
 
     private boolean autoYBounds = true;
 
-    private double autoYBoundsFactor = 2;
+    private double autoYBoundsFactor = 1.1;
 
     public double getXMin() {
         return xMin;

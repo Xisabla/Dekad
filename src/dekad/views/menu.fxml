@@ -31,12 +31,14 @@
 
         <Menu text="Variables">
             <MenuItem text="Todo"/>
-        </Menu>
+        </Menu>-->
 
         <Menu text="Settings">
-            <MenuItem text="Preference"/>
+            <CheckMenuItem fx:id="toggleAutoYBoundsCheckbox" text="Automatic Y Bounds" onAction="#toggleAutoYBounds"/>
+            <!--<MenuItem text="Preference"/>-->
         </Menu>
 
+        <!--
         <Menu text="Help">
             <MenuItem text="Documentation"/>
             <SeparatorMenuItem/>

@@ -73,8 +73,12 @@ public class GraphController implements Initializable {
 
     public void updateBounds() {
 
-        if(graphConfig.hasAutoYBounds())
+        if (graphConfig.hasAutoYBounds()) {
             processYBounds();
+        } else {
+            yMin = graphConfig.getYMin();
+            yMax = graphConfig.getYMax();
+        }
 
         xAxis.setLowerBound(xMin);
         xAxis.setUpperBound(xMax);
@@ -101,7 +105,7 @@ public class GraphController implements Initializable {
 
     public void processYBounds() {
 
-        if(functions.isEmpty()) {
+        if (functions.isEmpty()) {
 
             yMin = graphConfig.getYMin();
             yMax = graphConfig.getYMax();
@@ -111,21 +115,21 @@ public class GraphController implements Initializable {
             final List<Double> max = new ArrayList<>();
             final List<Double> min = new ArrayList<>();
 
-            for(int i = 0; i < functions.size(); i++) {
+            for (int i = 0; i < functions.size(); i++) {
 
                 max.add(i, Double.MIN_VALUE);
                 min.add(i, Double.MAX_VALUE);
 
             }
 
-            for(int i = 0; i < functions.size(); i++) {
+            for (int i = 0; i < functions.size(); i++) {
 
-                for(double x = xMin; x <= xMax; x += graph.getOffset()) {
+                for (double x = xMin; x <= xMax; x += graph.getOffset()) {
 
                     final double y = functions.get(i).eval(x);
 
-                    if(y > max.get(i)) max.set(i, y);
-                    if(y < min.get(i)) min.set(i, y);
+                    if (y > max.get(i)) max.set(i, y);
+                    if (y < min.get(i)) min.set(i, y);
 
                 }
 
