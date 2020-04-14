@@ -6,9 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import org.mariuszgromada.math.mxparser.Argument;
-import org.mariuszgromada.math.mxparser.Expression;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,10 +18,10 @@ public class GraphController implements Initializable {
 
     private List<MathFunction> functions;
 
-    private double xmin;
-    private double xmax;
-    private double ymin;
-    private double ymax;
+    private double xMin;
+    private double xMax;
+    private double yMin;
+    private double yMax;
 
     @FXML
     private LineChart<Double, Double> chart;
@@ -45,10 +42,10 @@ public class GraphController implements Initializable {
         graph = Graph.getInstance(chart);
         functions = new ArrayList<>();
 
-        xmin = -10;
-        xmax = 10;
-        ymin = -10;
-        ymax = 10;
+        xMin = -10;
+        xMax = 10;
+        yMin = -10;
+        yMax = 10;
 
         updateBounds();
 
@@ -69,17 +66,17 @@ public class GraphController implements Initializable {
 
     public void updateBounds() {
 
-        xAxis.setLowerBound(xmin);
-        xAxis.setUpperBound(xmax);
-        yAxis.setLowerBound(ymin);
-        yAxis.setUpperBound(ymax);
+        xAxis.setLowerBound(xMin);
+        xAxis.setUpperBound(xMax);
+        yAxis.setLowerBound(yMin);
+        yAxis.setUpperBound(yMax);
 
     }
 
     public void updateFunctions() {
 
         for (MathFunction function : functions) {
-            graph.plot(function, xmin, xmax);
+            graph.plot(function, xMin, xMax);
         }
 
     }
