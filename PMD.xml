@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ruleset name="Dekad rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+        PMD Rules for Dekad Project
+    </description>
+
+    <!-- Best Practices -->
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="SystemPrintln"/>
+    </rule>
+
+    <!-- Code Style -->
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="ShortVariable" />
+    </rule>
+
+    <rule ref="category/java/codestyle.xml/ControlStatementBraces">
+        <properties>
+            <property name="checkIfElseStmt" value="true" />
+            <property name="checkSingleIfStmt" value="false" />
+            <property name="checkWhileStmt" value="false" />
+            <property name="checkForStmt" value="true" />
+            <property name="checkDoWhileStmt" value="true" />
+            <property name="checkCaseStmt" value="true" />
+            <property name="allowEmptyLoop" value="false" />
+        </properties>
+    </rule>
+
+    <rule ref="category/java/codestyle.xml/FieldNamingConventions">
+        <properties>
+            <property name="publicConstantPattern" value="[A-Z][A-Z_0-9]*" />
+            <property name="constantPattern" value="[A-Z][A-Z_0-9]*" />
+            <property name="enumConstantPattern" value="[A-Z][A-Z_0-9]*" />
+            <property name="finalFieldPattern" value="[a-z][a-zA-Z0-9]*" />
+            <property name="staticFieldPattern" value="[single_instance]+[a-z][a-zA-Z0-9]*" />
+            <property name="defaultFieldPattern" value="[a-z][a-zA-Z0-9]*" />
+            <property name="exclusions" value="serialVersionUID|serialPersistentFields" />
+        </properties>
+    </rule>
+
+    <!-- Design -->
+    <rule ref="category/java/design.xml">
+
+    </rule>
+
+    <!-- Documentation -->
+    <rule ref="category/java/documentation.xml">
+
+    </rule>
+
+    <!-- Error Prone -->
+    <rule ref="category/java/errorprone.xml">
+
+    </rule>
+
+    <!-- Multithreading -->
+    <rule ref="category/java/multithreading.xml">
+
+    </rule>
+
+    <!-- Performance -->
+    <rule ref="category/java/performance.xml">
+
+    </rule>
+
+    <!-- Security -->
+    <rule ref="category/java/security.xml">
+
+    </rule>
+
+</ruleset>

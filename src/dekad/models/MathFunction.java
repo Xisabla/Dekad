@@ -9,13 +9,13 @@ public class MathFunction {
 
     private String arg;
 
-    public MathFunction(String functionText) {
+    public MathFunction(final String functionText) {
 
         this.arg = "x";
 
         if (functionText.contains("t")) arg = "t";
 
-        Argument argument = new Argument(arg);
+        final Argument argument = new Argument(arg);
         this.expression = new Expression(functionText, argument);
 
     }
@@ -24,7 +24,7 @@ public class MathFunction {
         return expression;
     }
 
-    public void setExpression(Expression expression) {
+    public void setExpression(final Expression expression) {
         this.expression = expression;
     }
 
@@ -32,11 +32,11 @@ public class MathFunction {
         return arg;
     }
 
-    public void setArg(String arg) {
+    public void setArg(final String arg) {
         this.arg = arg;
     }
 
-    public Double eval(Double value) {
+    public Double eval(final Double value) {
 
         expression.setArgumentValue(arg, value);
 

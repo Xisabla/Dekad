@@ -15,7 +15,7 @@ public class Graph {
         Graph.single_instance = this;
     }
 
-    public Graph(final XYChart<Double, Double> chart, double offset) {
+    public Graph(final XYChart<Double, Double> chart, final double offset) {
         this.chart = chart;
         this.offset = offset;
         Graph.single_instance = this;
@@ -25,7 +25,7 @@ public class Graph {
         return chart;
     }
 
-    public void setChart(XYChart<Double, Double> chart) {
+    public void setChart(final XYChart<Double, Double> chart) {
         this.chart = chart;
     }
 
@@ -33,11 +33,11 @@ public class Graph {
         return offset;
     }
 
-    public void setOffset(double offset) {
+    public void setOffset(final double offset) {
         this.offset = offset;
     }
 
-    public void plot(MathFunction mathFunction, double min, double max) {
+    public void plot(final MathFunction mathFunction, final double min, final double max) {
 
         final XYChart.Series<Double, Double> series = new XYChart.Series<>();
 
@@ -74,7 +74,7 @@ public class Graph {
 
     public static Graph getInstance(final XYChart<Double, Double> chart) {
 
-        Graph instance = getInstance();
+        final Graph instance = getInstance();
 
         instance.setChart(chart);
 

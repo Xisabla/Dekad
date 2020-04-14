@@ -1,5 +1,6 @@
 package dekad.controllers;
 
+import dekad.core.App;
 import dekad.models.MathFunction;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,16 +12,14 @@ import java.util.ResourceBundle;
 
 public class FunctionController implements Initializable {
 
-    private GraphController graphController;
+    @FXML
+    public transient Text invalidText;
 
     @FXML
-    public Text invalidText;
-
-    @FXML
-    public TextField functionField;
+    public transient TextField functionField;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
 
         System.out.println("Function Controller loaded.");
 
@@ -28,16 +27,14 @@ public class FunctionController implements Initializable {
 
     public void append() {
 
-        if (graphController == null) graphController = GraphController.graphController;
-
-        MathFunction mathFunction = new MathFunction(functionField.getText());
+        final MathFunction mathFunction = new MathFunction(functionField.getText());
 
         invalidText.setVisible(false);
 
         if (mathFunction.isValid()) {
 
-            graphController.addFunction(mathFunction);
-            graphController.update();
+            App.graphController.addFunction(mathFunction);
+            App.graphController.update();
 
         } else {
 
