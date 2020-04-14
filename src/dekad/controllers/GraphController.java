@@ -21,19 +21,33 @@ import static java.lang.Double.*;
 
 public class GraphController implements Initializable {
 
+    /**
+     *
+     */
     private final GraphConfig graphConfig = App.graphConfig;
 
+    /**
+     * Allow other classes to catch the GraphController
+     */
     public static GraphController graphController;
 
+    /**
+     * Functions list of the graph
+     */
     private List<MathFunction> functions;
 
+    /**
+     * Graph main data
+     */
     private double xMin;
     private double xMax;
     private double yMin;
     private double yMax;
-
     private Graph graph;
 
+    /**
+     * Drag behavior
+     */
     private double lastDragX = NaN;
     private double lastDragY = NaN;
 
@@ -49,12 +63,13 @@ public class GraphController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
 
+        // Set Controller available
         graphController = this;
         App.updateControllers();
 
+        // Initialize Graph
         graph = Graph.getInstance(chart);
         functions = new ArrayList<>();
-
         graph.setOffset(graphConfig.getOffset());
 
         xMin = graphConfig.getXMin();
@@ -68,6 +83,7 @@ public class GraphController implements Initializable {
         functions.add(new MathFunction("sinc(x)"));
         update();
 
+        // Set event handlers
         chart.setOnMouseDragged(this::handleChartMouseDragged);
         chart.setOnMouseReleased(this::handleChartMouseRelease);
         chart.setOnScroll(this::handleChartScroll);
@@ -82,9 +98,20 @@ public class GraphController implements Initializable {
 
     }
 
+    public void setBounds(double xMin, double xMax, double yMin, double yMax) {
+
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.yMin = yMin;
+        this.yMax = yMax;
+
+        update();
+
+    }
+
     public void updateBounds() {
 
-        if (graphConfig.hasAutoYBounds()) {
+        if (graphConfig.hasComputedYBounds()) {
             computeYBounds();
         }
 
@@ -97,6 +124,7 @@ public class GraphController implements Initializable {
 
     public void updateFunctions() {
 
+        // Plot each functions
         for (final MathFunction function : functions) {
             graph.plot(function, xMin, xMax);
         }
@@ -104,7 +132,7 @@ public class GraphController implements Initializable {
     }
 
     public void update() {
-
+        // TODO: GraphConfig.doesComputeOffset()
         update(true);
 
     }
@@ -120,19 +148,9 @@ public class GraphController implements Initializable {
 
     }
 
-    public void setBounds(double xMin, double xMax, double yMin, double yMax) {
-
-        this.xMin = xMin;
-        this.xMax = xMax;
-        this.yMin = yMin;
-        this.yMax = yMax;
-
-        update();
-
-    }
-
     private void computeYBounds() {
 
+        // Just reset if there is not functions
         if (functions.isEmpty()) {
 
             yMin = graphConfig.getYMin();
@@ -150,6 +168,7 @@ public class GraphController implements Initializable {
 
             }
 
+            // Get the min and the max of each functions
             for (int i = 0; i < functions.size(); i++) {
 
                 for (double x = xMin; x <= xMax; x += graph.getOffset()) {
@@ -163,8 +182,9 @@ public class GraphController implements Initializable {
 
             }
 
-            yMax = Collections.min(max) * graphConfig.getAutoYBoundsFactor();
-            yMin = Collections.max(min) * graphConfig.getAutoYBoundsFactor();
+            // Choose to focus and the "smallest" function
+            yMax = Collections.min(max) * graphConfig.getComputedYBoundsFactor();
+            yMin = Collections.max(min) * graphConfig.getComputedYBoundsFactor();
 
         }
 
@@ -173,20 +193,20 @@ public class GraphController implements Initializable {
     private void computeOffset() {
 
         double offset = graph.getOffset();
+
+        // Compute ratio
         double baseWidth = graphConfig.getYMax() - graphConfig.getXMin();
         double currentWidth = xMax - xMin;
         double ratio = currentWidth / baseWidth;
 
+        // Update offset
         graph.setOffset(graphConfig.getOffset() * ratio);
-
-        System.out.println(offset + " --> " + graph.getOffset());
 
     }
 
     private void handleChartMouseDragged(MouseEvent event) {
 
         if (!isNaN(lastDragX)) {
-
             // Remove the axis width (~= 0.05% of the total chart width)
             double chartWidth = chart.getWidth() * 0.95;
             double chartHeight = chart.getHeight() * 0.95;
@@ -208,19 +228,22 @@ public class GraphController implements Initializable {
             double baseOffset = graph.getOffset();
             graph.setOffset(baseOffset * graphConfig.getComputingOffsetRatio());
 
+            // Move the bounds
             xMin += graphDiffX;
             xMax += graphDiffX;
             yMin += graphDiffY;
             yMax += graphDiffY;
 
+            // Update, don't compute offset it will be done on mouse drag release
             update(false);
 
+            // Reset the base offset
             graph.setOffset(baseOffset);
 
         } else {
 
             // Automatically disable Auto Y Bounds
-            App.menuController.forceAutoYBounds(false);
+            App.menuController.forceComputedYBounds(false);
 
         }
 
@@ -231,25 +254,28 @@ public class GraphController implements Initializable {
 
     private void handleChartMouseRelease(MouseEvent event) {
 
+        // Reset lastDrag variables
         lastDragX = NaN;
+        lastDragY = NaN;
         update(true);
 
     }
 
     private void handleChartScroll(ScrollEvent event) {
 
-        App.menuController.forceAutoYBounds(false);
+        // Dont compute bounds
+        App.menuController.forceComputedYBounds(false);
 
         // TODO: Replace 0.7 by GraphConfig.getZoomRatio()
         if (event.getDeltaY() > 0) {
-
+            // Zoom in
             xMin *= 0.7;
             xMax *= 0.7;
             yMin *= 0.7;
             yMax *= 0.7;
 
         } else {
-
+            // Zoom out
             xMin /= 0.7;
             xMax /= 0.7;
             yMin /= 0.7;
@@ -257,6 +283,7 @@ public class GraphController implements Initializable {
 
         }
 
+        // Update computing the offset
         update(true);
 
     }

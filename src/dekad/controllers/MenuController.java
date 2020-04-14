@@ -13,15 +13,17 @@ public class MenuController implements Initializable {
     public static MenuController menuController;
 
     @FXML
-    public CheckMenuItem autoYBoundsCheckbox;
+    public CheckMenuItem computedYBoundsCheckbox;
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
 
+        // Set Controller available
         menuController = this;
         App.updateControllers();
 
-        autoYBoundsCheckbox.setSelected(App.graphConfig.hasAutoYBounds());
+        // Initialize computed offset status
+        computedYBoundsCheckbox.setSelected(App.graphConfig.hasComputedYBounds());
 
         System.out.println("Menu Controller loaded.");
 
@@ -31,24 +33,24 @@ public class MenuController implements Initializable {
         System.exit(0);
     }
 
-    public void toggleAutoYBounds() {
+    public void toggleComputedYBounds() {
 
-        App.graphConfig.setAutoYBounds(autoYBoundsCheckbox.isSelected());
+        App.graphConfig.setComputedYBounds(computedYBoundsCheckbox.isSelected());
         App.graphController.update();
 
     }
 
-    public void forceAutoYBounds(boolean value) {
+    public void forceComputedYBounds(boolean value) {
 
-        autoYBoundsCheckbox.setSelected(value);
-        App.graphConfig.setAutoYBounds(value);
+        computedYBoundsCheckbox.setSelected(value);
+        App.graphConfig.setComputedYBounds(value);
         App.graphController.update();
 
     }
 
     public void resetBounds() {
 
-        forceAutoYBounds(false);
+        forceComputedYBounds(false);
         App.graphController.setBounds(App.graphConfig.getXMin(), App.graphConfig.getXMax(), App.graphConfig.getYMin(), App.graphConfig.getYMax());
 
     }

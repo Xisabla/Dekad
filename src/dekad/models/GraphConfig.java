@@ -14,9 +14,9 @@ public class GraphConfig {
 
     private double computingOffsetRatio = 20;
 
-    private boolean autoYBounds = true;
+    private boolean computedYBounds = true;
 
-    private double autoYBoundsFactor = 1.1;
+    private double computedYBoundsFactor = 1.1;
 
     public double getXMin() {
         return xMin;
@@ -66,19 +66,19 @@ public class GraphConfig {
         this.computingOffsetRatio = computingOffsetRatio;
     }
 
-    public boolean hasAutoYBounds() {
-        return autoYBounds;
+    public boolean hasComputedYBounds() {
+        return computedYBounds;
     }
 
-    public void setAutoYBounds(final boolean autoYBounds) {
-        this.autoYBounds = autoYBounds;
+    public void setComputedYBounds(final boolean computedYBounds) {
+        this.computedYBounds = computedYBounds;
     }
 
-    public double getAutoYBoundsFactor() {
-        return autoYBoundsFactor;
+    public double getComputedYBoundsFactor() {
+        return computedYBoundsFactor;
     }
 
-    public void setAutoYBoundsFactor(final double autoYBoundsFactor) {
-        this.autoYBoundsFactor = autoYBoundsFactor;
+    public void setComputedYBoundsFactor(final double computedYBoundsFactor) {
+        this.computedYBoundsFactor = computedYBoundsFactor;
     }
 }
