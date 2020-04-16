@@ -83,6 +83,7 @@ public class Function extends VBox {
         if(mathFunction.isValid()) {
             functionExpression.setStyle("");
             this.mathFunction = mathFunction;
+            functionName.setText(String.format("f%d(%s) = ", id, mathFunction.getArg()));
 
             parentController.updateFunctions();
         } else {
