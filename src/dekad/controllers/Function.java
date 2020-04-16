@@ -1,6 +1,5 @@
 package dekad.controllers;
 
-import dekad.core.App;
 import dekad.models.MathFunction;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

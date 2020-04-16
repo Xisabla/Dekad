@@ -22,7 +22,7 @@ public class FunctionsPaneController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
 
-        System.out.println("Function Controller loaded.");
+        System.out.println("FunctionsPane Controller loaded.");
 
     }
 
