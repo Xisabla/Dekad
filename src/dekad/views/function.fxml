@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+
+<fx:root type="VBox"
+         xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         minHeight="100" prefWidth="500"
+         style="-fx-border-color: lightgray; -fx-padding: 20">
+
+    <VBox.margin>
+        <Insets right="10" left="10" top="5" bottom="5"/>
+    </VBox.margin>
+
+    <HBox>
+
+        <Text fx:id="functionName" text="f1(x) = "/>
+
+        <TextField fx:id="functionExpression" text="cos(x)/x" prefWidth="400" onAction="#update"/>
+
+    </HBox>
+
+    <HBox alignment="BASELINE_RIGHT">
+
+        <VBox.margin>
+            <Insets top="5"/>
+        </VBox.margin>
+
+        <Button text="Update" onAction="#update">
+            <HBox.margin>
+                <Insets left="5" right="5" />
+            </HBox.margin>
+        </Button>
+
+        <Button fx:id="showHideButton" text="Hide" onAction="#showHide">
+            <HBox.margin>
+                <Insets left="5" right="5" />
+            </HBox.margin>
+        </Button>
+
+        <Button text="(todo) Change parameter" onAction="#changeParameter">
+            <HBox.margin>
+                <Insets left="5" right="5" />
+            </HBox.margin>
+        </Button>
+
+        <Button text="Remove" onAction="#remove">
+            <HBox.margin>
+                <Insets left="5" right="5" />
+            </HBox.margin>
+        </Button>
+
+    </HBox>
+
+</fx:root>

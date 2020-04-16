@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dekad.controllers.FunctionsPaneController"
+      prefHeight="975" prefWidth="520"
+      style="-fx-border-color: lightgray">
+
+    <ScrollPane prefWidth="520">
+        <VBox fx:id="functionsList" prefHeight="850" prefWidth="495" alignment="TOP_CENTER">
+            <Text text="Functions" style="-fx-font-size: 16px" />
+        </VBox>
+    </ScrollPane>
+
+    <VBox alignment="TOP_CENTER">
+
+        <VBox.margin>
+            <Insets top="10" left="10" right="10" bottom="10" />
+        </VBox.margin>
+
+        <HBox>
+            <Text text="f(x) = "/>
+            <TextField fx:id="functionField" text="cos(x)/x" prefWidth="500" onAction="#append"/>
+        </HBox>
+
+        <Button text="Add function" prefWidth="400" onAction="#append">
+            <VBox.margin>
+                <Insets top="10"/>
+            </VBox.margin>
+            <HBox.margin>
+                <Insets left="5" right="5" />
+            </HBox.margin>
+        </Button>
+    </VBox>
+
+</VBox>

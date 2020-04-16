@@ -78,9 +78,6 @@ public class GraphController implements Initializable {
         yMax = graphConfig.getYMax();
 
         updateBounds();
-
-        // Sample function
-        functions.add(new MathFunction("sinc(x)"));
         update();
 
         // Set event handlers
@@ -95,6 +92,12 @@ public class GraphController implements Initializable {
     public void addFunction(final MathFunction function) {
 
         functions.add(function);
+
+    }
+
+    public void clearFunctions() {
+
+        functions.clear();
 
     }
 

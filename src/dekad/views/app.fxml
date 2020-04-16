@@ -11,7 +11,7 @@
 
     <HBox prefHeight="975">
 
-        <fx:include source="functions.fxml"/>
+        <fx:include source="functionsPane.fxml"/>
         <fx:include source="graph.fxml"/>
 
     </HBox>

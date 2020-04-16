@@ -14,7 +14,7 @@ public class GraphConfig {
 
     private double computingOffsetRatio = 20;
 
-    private boolean computedYBounds = true;
+    private boolean computedYBounds = false;
 
     private double computedYBoundsFactor = 1.1;
 
