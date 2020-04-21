@@ -13,35 +13,36 @@ import java.io.IOException;
 
 public class Function extends VBox {
 
+    private final transient DekadApp app;
 
-    private DekadApp app;
+    private transient int functionId;
 
-    private int functionId;
+    private transient MathFunction mathFunction;
 
-    private MathFunction mathFunction;
-
-    private boolean show;
+    private transient boolean show;
 
     private static int counter = 1;
 
     // TODO: Add color management
 
     @FXML
-    private Text functionName;
+    private transient Text functionName;
 
     @FXML
-    private TextField functionExpression;
+    private transient TextField functionExpression;
 
     @FXML
-    private Button showHideButton;
+    private transient Button showHideButton;
 
-    public Function(DekadApp app, MathFunction mathFunction) {
+    public Function(final DekadApp app, final MathFunction mathFunction) {
+
+        super();
 
         this.app = app;
         this.show = true;
         this.mathFunction = mathFunction;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/function.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/function.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -68,7 +69,7 @@ public class Function extends VBox {
     }
 
     public void update() {
-        MathFunction mathFunction = new MathFunction(functionExpression.getText());
+        final MathFunction mathFunction = new MathFunction(functionExpression.getText());
 
         if(mathFunction.isValid()) {
             functionExpression.setStyle("");

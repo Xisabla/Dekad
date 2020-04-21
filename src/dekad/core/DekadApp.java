@@ -19,19 +19,20 @@ public class DekadApp extends Application {
     private Graph graph;
 
     // Settings
-    private Settings settings;
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
+    private transient Settings settings;
 
     @Override
     public void start(final Stage primaryStage) throws IOException {
 
         // Settings
-        String defaultSettingsFile = getClass().getResource("/dekad/data/settings.xml").getFile();
-        String settingsFile = Paths.get("./settings.xml").toAbsolutePath().normalize().toString();
+        final String defaultSettingsFile = getClass().getResource("/dekad/data/settings.xml").getFile();
+        final String settingsFile = Paths.get("./settings.xml").toAbsolutePath().normalize().toString();
 
         settings = Settings.readOrGenerate(settingsFile, defaultSettingsFile);
 
         // Scene
-        final Parent root = new dekad.controllers.App(this);
+        final Parent root = new App(this);
         primaryStage.setTitle("Dekad");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -59,19 +60,19 @@ public class DekadApp extends Application {
         return graph;
     }
 
-    public void setAppController(App appController) {
+    public void setAppController(final App appController) {
         this.appController = appController;
     }
 
-    public void setMenu(Menu menu) {
+    public void setMenu(final Menu menu) {
         this.menu = menu;
     }
 
-    public void setFunctionsPane(FunctionsPane functionsPane) {
+    public void setFunctionsPane(final FunctionsPane functionsPane) {
         this.functionsPane = functionsPane;
     }
 
-    public void setGraph(Graph graph) {
+    public void setGraph(final Graph graph) {
         this.graph = graph;
     }
 

@@ -5,7 +5,7 @@ import javafx.scene.chart.XYChart;
 
 public class GraphManager {
 
-    private final XYChart<Double, Double> chart;
+    private final transient XYChart<Double, Double> chart;
     private double offset;
 
     public GraphManager(final XYChart<Double, Double> chart) {
@@ -23,17 +23,21 @@ public class GraphManager {
 
     public void plot(final Function function, final double min, final double max) {
 
-        MathFunction mathFunction = function.getMathFunction();
         final XYChart.Series<Double, Double> series = new XYChart.Series<>();
 
         for (double x = min; x <= max; x += offset) {
 
-            // plotPoint(x, mathFunction.eval(x), series);
-            series.getData().add(new XYChart.Data<>(x, mathFunction.eval(x)));
+            plotPoint(x, function.getMathFunction().eval(x), series);
 
         }
 
         chart.getData().add(series);
+
+    }
+
+    private void plotPoint(final double x, final double y, final XYChart.Series<Double, Double> series) {
+
+        series.getData().add(new XYChart.Data<>(x, y));
 
     }
 

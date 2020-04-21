@@ -12,41 +12,48 @@
     <!-- Best Practices -->
     <rule ref="category/java/bestpractices.xml">
         <exclude name="SystemPrintln"/>
+        <exclude name="UnusedFormalParameter"/>
     </rule>
 
     <!-- Code Style -->
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor"/>
-        <exclude name="ShortVariable" />
+        <exclude name="LongVariable"/>
+        <exclude name="OnlyOneReturn"/>
+        <exclude name="ShortClassName"/>
+        <exclude name="ShortVariable"/>
     </rule>
 
     <rule ref="category/java/codestyle.xml/ControlStatementBraces">
         <properties>
-            <property name="checkIfElseStmt" value="true" />
-            <property name="checkSingleIfStmt" value="false" />
-            <property name="checkWhileStmt" value="false" />
-            <property name="checkForStmt" value="true" />
-            <property name="checkDoWhileStmt" value="true" />
-            <property name="checkCaseStmt" value="true" />
-            <property name="allowEmptyLoop" value="false" />
+            <property name="checkIfElseStmt" value="true"/>
+            <property name="checkSingleIfStmt" value="false"/>
+            <property name="checkWhileStmt" value="false"/>
+            <property name="checkForStmt" value="true"/>
+            <property name="checkDoWhileStmt" value="true"/>
+            <property name="checkCaseStmt" value="true"/>
+            <property name="allowEmptyLoop" value="false"/>
         </properties>
     </rule>
 
     <rule ref="category/java/codestyle.xml/FieldNamingConventions">
         <properties>
-            <property name="publicConstantPattern" value="[A-Z][A-Z_0-9]*" />
-            <property name="constantPattern" value="[A-Z][A-Z_0-9]*" />
-            <property name="enumConstantPattern" value="[A-Z][A-Z_0-9]*" />
-            <property name="finalFieldPattern" value="[a-z][a-zA-Z0-9]*" />
-            <property name="staticFieldPattern" value="[single_instance]+[a-z][a-zA-Z0-9]*" />
-            <property name="defaultFieldPattern" value="[a-z][a-zA-Z0-9]*" />
-            <property name="exclusions" value="serialVersionUID|serialPersistentFields" />
+            <property name="publicConstantPattern" value="[A-Z][A-Z_0-9]*"/>
+            <property name="constantPattern" value="[A-Z][A-Z_0-9]*"/>
+            <property name="enumConstantPattern" value="[A-Z][A-Z_0-9]*"/>
+            <property name="finalFieldPattern" value="[a-z][a-zA-Z0-9]*"/>
+            <property name="staticFieldPattern" value="[single_instance]+[a-z][a-zA-Z0-9]*"/>
+            <property name="defaultFieldPattern" value="[a-z][a-zA-Z0-9]*"/>
+            <property name="exclusions" value="serialVersionUID|serialPersistentFields"/>
         </properties>
     </rule>
 
     <!-- Design -->
     <rule ref="category/java/design.xml">
-
+        <exclude name="AvoidThrowingRawExceptionTypes"/>
+        <exclude name="DataClass"/>
+        <exclude name="LawOfDemeter"/>
+        <exclude name="TooManyMethods"/>
     </rule>
 
     <!-- Documentation -->
@@ -56,7 +63,7 @@
 
     <!-- Error Prone -->
     <rule ref="category/java/errorprone.xml">
-
+        <exclude name="DoNotCallSystemExit"/>
     </rule>
 
     <!-- Multithreading -->
@@ -66,7 +73,7 @@
 
     <!-- Performance -->
     <rule ref="category/java/performance.xml">
-
+        <exclude name="InsufficientStringBufferDeclaration"/>
     </rule>
 
     <!-- Security -->

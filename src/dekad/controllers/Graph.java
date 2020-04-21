@@ -2,7 +2,6 @@ package dekad.controllers;
 
 import dekad.core.DekadApp;
 import dekad.models.GraphManager;
-import dekad.models.MathFunction;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.LineChart;
@@ -21,42 +20,44 @@ import static java.lang.Double.isNaN;
 
 public class Graph extends VBox {
 
-    private DekadApp app;
+    private final transient DekadApp app;
 
     /**
      * Functions list of the graph
      */
-    private List<Function> functions;
+    private transient List<Function> functions;
 
     /**
      * Graph main data
      */
-    private double xMin;
-    private double xMax;
-    private double yMin;
-    private double yMax;
-    private GraphManager graphManager;
+    private transient double xMin;
+    private transient double xMax;
+    private transient double yMin;
+    private transient double yMax;
+    private transient GraphManager graphManager;
 
     /**
      * Drag behavior
      */
-    private double lastDragX = NaN;
-    private double lastDragY = NaN;
+    private transient double lastDragX = NaN;
+    private transient double lastDragY = NaN;
 
     @FXML
-    private LineChart<Double, Double> chart;
+    private transient LineChart<Double, Double> chart;
 
     @FXML
-    private NumberAxis xAxis;
+    private transient NumberAxis xAxis;
 
     @FXML
-    private NumberAxis yAxis;
+    private transient NumberAxis yAxis;
 
-    public Graph(DekadApp app) {
+    public Graph(final DekadApp app) {
+
+        super();
 
         this.app = app;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/graph.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/graph.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -89,7 +90,7 @@ public class Graph extends VBox {
 
     }
 
-    public void addFunctions(Function function) {
+    public void addFunctions(final Function function) {
         functions.add(function);
     }
 
@@ -98,11 +99,11 @@ public class Graph extends VBox {
         graphManager.clear();
     }
 
-    public void setFunctions(List<Function> functions) {
+    public void setFunctions(final List<Function> functions) {
         this.functions = functions;
     }
 
-    public void setBounds(double xMin, double xMax, double yMin, double yMax) {
+    public void setBounds(final double xMin, final double xMax, final double yMin, final double yMax) {
 
         this.xMin = xMin;
         this.xMax = xMax;
@@ -113,11 +114,11 @@ public class Graph extends VBox {
 
     }
 
-    public void update() {
+    public final void update() {
         update(true);
     }
 
-    public void update(boolean doesComputeOffset) {
+    public void update(final boolean doesComputeOffset) {
 
         graphManager.clear();
         bindBounds();
@@ -193,40 +194,44 @@ public class Graph extends VBox {
 
     private void computeOffset() {
 
-        double offset = graphManager.getOffset();
-
         // Compute ratio
-        double baseWidth = app.settings().getPlotXMax() - app.settings().getPlotXMin();
-        double currentWidth = xMax - xMin;
-        double ratio = currentWidth / baseWidth;
+        final double baseWidth = app.settings().getPlotXMax() - app.settings().getPlotXMin();
+        final double currentWidth = xMax - xMin;
+        final double ratio = currentWidth / baseWidth;
 
         // Update offset
         graphManager.setOffset(app.settings().getPlotOffsetDefault() * ratio);
 
     }
 
-    private void handleChartMouseDragged(MouseEvent event) {
+    private void handleChartMouseDragged(final MouseEvent event) {
 
-        if (!isNaN(lastDragX) && !isNaN(lastDragY)) {
+        if (isNaN(lastDragX) || isNaN(lastDragY)) {
+
+            // Automatically disable Auto Y Bounds
+            app.getMenu().setComputedBounds(false);
+
+        } else {
+
             // Remove the axis width (~= 0.05% of the total chart width)
-            double chartWidth = chart.getWidth() * 0.95;
-            double chartHeight = chart.getHeight() * 0.95;
-            double graphWidth = xMax - xMin;
-            double graphHeight = yMax - yMin;
+            final double chartWidth = chart.getWidth() * 0.95;
+            final double chartHeight = chart.getHeight() * 0.95;
+            final double graphWidth = xMax - xMin;
+            final double graphHeight = yMax - yMin;
             // Compute ratio between the Graph Bounds and the Chart Width
-            double widthRatio = graphWidth / chartWidth;
-            double heightRatio = graphHeight / chartHeight;
+            final double widthRatio = graphWidth / chartWidth;
+            final double heightRatio = graphHeight / chartHeight;
 
             // Compute the difference with the last event
-            double chartDiffX = (lastDragX - event.getX());
-            double chartDiffY = (event.getY() - lastDragY);
+            final double chartDiffX = lastDragX - event.getX();
+            final double chartDiffY = event.getY() - lastDragY;
 
             // Compute the Graph Bounds changes
-            double graphDiffX = chartDiffX * widthRatio;
-            double graphDiffY = chartDiffY * heightRatio;
+            final double graphDiffX = chartDiffX * widthRatio;
+            final double graphDiffY = chartDiffY * heightRatio;
 
             // Lower the precision during the process to avoid lags
-            double baseOffset = graphManager.getOffset();
+            final double baseOffset = graphManager.getOffset();
             graphManager.setOffset(app.settings().getPlotOffsetComputing());
 
             // Move the bounds
@@ -241,11 +246,6 @@ public class Graph extends VBox {
             // Reset the base offset
             graphManager.setOffset(baseOffset);
 
-        } else {
-
-            // Automatically disable Auto Y Bounds
-            app.getMenu().setComputedBounds(false);
-
         }
 
         lastDragX = event.getX();
@@ -253,7 +253,7 @@ public class Graph extends VBox {
 
     }
 
-    private void handleChartMouseRelease(MouseEvent event) {
+    private void handleChartMouseRelease(final MouseEvent event) {
 
         // Reset lastDrag variables
         lastDragX = NaN;
@@ -262,7 +262,7 @@ public class Graph extends VBox {
 
     }
 
-    private void handleChartScroll(ScrollEvent event) {
+    private void handleChartScroll(final ScrollEvent event) {
 
         app.getMenu().setComputedBounds(false);
 

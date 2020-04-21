@@ -12,19 +12,21 @@ import java.io.IOException;
 
 public class FunctionsPane extends VBox {
 
-    private DekadApp app;
+    private final transient DekadApp app;
 
     @FXML
-    private VBox functionsList;
+    private transient VBox functionsList;
 
     @FXML
-    private TextField functionField;
+    private transient TextField functionField;
 
-    public FunctionsPane(DekadApp app) {
+    public FunctionsPane(final DekadApp app) {
+
+        super();
 
         this.app = app;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/functionspane.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/functionspane.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -44,7 +46,7 @@ public class FunctionsPane extends VBox {
         final MathFunction mathFunction = new MathFunction(functionField.getText());
 
         if(mathFunction.isValid()) {
-            Function function = new Function(app, mathFunction);
+            final Function function = new Function(app, mathFunction);
             functionsList.getChildren().add(function);
             update();
         } /*else {
@@ -61,9 +63,9 @@ public class FunctionsPane extends VBox {
     public void update() {
         app.getGraph().clear();
 
-        for(Node child : functionsList.getChildren()) {
+        for(final Node child : functionsList.getChildren()) {
             if(child instanceof Function) {
-                Function function = (Function) child;
+                final Function function = (Function) child;
 
                 app.getGraph().addFunctions(function);
             }

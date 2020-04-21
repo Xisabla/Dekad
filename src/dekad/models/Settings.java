@@ -4,9 +4,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +17,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static java.lang.Double.*;
 
@@ -22,7 +25,7 @@ import static java.lang.Double.*;
 public class Settings {
 
     // File
-    String settingsFile;
+    private final transient String settingsFile;
 
     // plot
     private double plotXMin;
@@ -41,7 +44,7 @@ public class Settings {
     // functions
     private List<String> functionsArguments;
 
-    public Settings(String filename) {
+    public Settings(final String filename) {
         this.settingsFile = filename;
 
         setDefault();
@@ -63,10 +66,21 @@ public class Settings {
         functionsArguments.add("t");
     }
 
-    // Write
-    public void write(String filename) {
+    private boolean checkTrimEmpty(final String str) {
 
-        String data = toString();
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Write
+    public void write(final String filename) {
+
+        final String data = toString();
 
         try {
             Files.write(Paths.get(filename), data.getBytes(StandardCharsets.UTF_8),
@@ -79,12 +93,12 @@ public class Settings {
     }
 
     // Read
-    static public Settings readOrGenerate(String filename, String defaultSettingsFile) {
+    static public Settings readOrGenerate(final String filename, final String defaultSettingsFile) {
 
-        File f = new File(filename);
+        final File f = new File(filename);
 
-        if(!f.exists()) {
-            Settings temp = new Settings(defaultSettingsFile);
+        if (!f.exists()) {
+            final Settings temp = new Settings(defaultSettingsFile);
             temp.write(filename);
         }
 
@@ -92,38 +106,38 @@ public class Settings {
 
     }
 
-    private void read(File fxmlFile) {
+    private void read(final File fxmlFile) {
 
         try {
 
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(fxmlFile);
+            final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            final Document document = documentBuilder.parse(fxmlFile);
             document.getDocumentElement().normalize();
 
-            Element settings = (Element) document.getElementsByTagName("settings").item(0);
+            final Element settings = (Element) document.getElementsByTagName("settings").item(0);
 
             readPlot(settings);
             readFunctions(settings);
 
-        } catch (Exception e) {
+        } catch (SAXException | ParserConfigurationException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Element getLastChildNamed(Element parent, String name) {
+    private Element getLastChildNamed(final Element parent, final String name) {
 
         if (parent == null) return null;
 
-        NodeList nodeList = parent.getElementsByTagName(name);
+        final NodeList nodeList = parent.getElementsByTagName(name);
 
         return nodeList.getLength() > 0 ? (Element) nodeList.item(nodeList.getLength() - 1) : null;
 
     }
 
-    private void readPlot(Element settings) {
+    private void readPlot(final Element settings) {
 
-        Element plot = getLastChildNamed(settings, "plot");
+        final Element plot = getLastChildNamed(settings, "plot");
 
         if (plot != null) {
 
@@ -138,9 +152,9 @@ public class Settings {
 
     }
 
-    private void readFunctions(Element settings) {
+    private void readFunctions(final Element settings) {
 
-        Element functions = getLastChildNamed(settings, "functions");
+        final Element functions = getLastChildNamed(settings, "functions");
 
         if (functions != null) {
 
@@ -150,41 +164,41 @@ public class Settings {
 
     }
 
-    private void readPlotXMin(Element plot) {
+    private void readPlotXMin(final Element plot) {
 
-        Element xmin = getLastChildNamed(plot, "xmin");
+        final Element xmin = getLastChildNamed(plot, "xmin");
 
         if (xmin != null) plotXMin = parseDouble(xmin.getTextContent());
 
     }
 
-    private void readPlotXMax(Element plot) {
+    private void readPlotXMax(final Element plot) {
 
-        Element xmax = getLastChildNamed(plot, "xmax");
+        final Element xmax = getLastChildNamed(plot, "xmax");
 
         if (xmax != null) plotXMax = parseDouble(xmax.getTextContent());
 
     }
 
-    private void readPlotYMin(Element plot) {
+    private void readPlotYMin(final Element plot) {
 
-        Element ymin = getLastChildNamed(plot, "ymin");
+        final Element ymin = getLastChildNamed(plot, "ymin");
 
         if (ymin != null) plotYMin = parseDouble(ymin.getTextContent());
 
     }
 
-    private void readPlotYMax(Element plot) {
+    private void readPlotYMax(final Element plot) {
 
-        Element ymax = getLastChildNamed(plot, "ymax");
+        final Element ymax = getLastChildNamed(plot, "ymax");
 
         if (ymax != null) plotYMax = parseDouble(ymax.getTextContent());
 
     }
 
-    private void readPlotOffset(Element plot) {
+    private void readPlotOffset(final Element plot) {
 
-        Element offset = getLastChildNamed(plot, "offset");
+        final Element offset = getLastChildNamed(plot, "offset");
 
         if (offset != null) {
 
@@ -195,25 +209,25 @@ public class Settings {
 
     }
 
-    private void readPlotOffsetDefault(Element offset) {
+    private void readPlotOffsetDefault(final Element offset) {
 
-        Element def = getLastChildNamed(offset, "default");
+        final Element def = getLastChildNamed(offset, "default");
 
         if (def != null) plotOffsetDefault = parseDouble(def.getTextContent());
 
     }
 
-    private void readPlotOffsetComputing(Element offset) {
+    private void readPlotOffsetComputing(final Element offset) {
 
-        Element computing = getLastChildNamed(offset, "computing");
+        final Element computing = getLastChildNamed(offset, "computing");
 
         if (computing != null) plotOffsetComputing = parseDouble(computing.getTextContent());
 
     }
 
-    private void readPlotBounds(Element plot) {
+    private void readPlotBounds(final Element plot) {
 
-        Element bounds = getLastChildNamed(plot, "bounds");
+        final Element bounds = getLastChildNamed(plot, "bounds");
 
         if (bounds != null) {
 
@@ -224,34 +238,35 @@ public class Settings {
 
     }
 
-    private void readPlotBoundsComputed(Element bounds) {
+    private void readPlotBoundsComputed(final Element bounds) {
 
-        Element computed = getLastChildNamed(bounds, "computed");
+        final Element computed = getLastChildNamed(bounds, "computed");
 
-        if (computed != null) plotBoundsComputed = computed.getTextContent().toLowerCase().equals("true");
+        if (computed != null)
+            plotBoundsComputed = computed.getTextContent().toLowerCase(Locale.getDefault()).equals("true");
 
     }
 
-    private void readPlotBoundsComputefactor(Element bounds) {
+    private void readPlotBoundsComputefactor(final Element bounds) {
 
-        Element computeFactor = getLastChildNamed(bounds, "computeFactor");
+        final Element computeFactor = getLastChildNamed(bounds, "computeFactor");
 
         if (computeFactor != null) plotBoundsComputefactor = parseDouble(computeFactor.getTextContent());
 
     }
 
-    private void readFunctionsArguments(Element functions) {
+    private void readFunctionsArguments(final Element functions) {
 
-        Element arguments = getLastChildNamed(functions, "arguments");
+        final Element arguments = getLastChildNamed(functions, "arguments");
 
         if (arguments != null) {
 
-            List<String> args = new ArrayList<>();
+            final List<String> args = new ArrayList<>();
 
             for (int i = 0; i < arguments.getChildNodes().getLength(); i++) {
-                Node argument = arguments.getChildNodes().item(i);
+                final Node argument = arguments.getChildNodes().item(i);
 
-                if (argument.getNodeName().equals("argument") && !argument.getTextContent().trim().isEmpty()) {
+                if (argument.getNodeName().equals("argument") && !checkTrimEmpty(argument.getTextContent())) {
                     args.add(argument.getTextContent());
                 }
             }
@@ -300,43 +315,43 @@ public class Settings {
     }
 
     // Setters
-    public void setPlotXMin(double plotXMin) {
+    public void setPlotXMin(final double plotXMin) {
         this.plotXMin = plotXMin;
     }
 
-    public void setPlotXMax(double plotXMax) {
+    public void setPlotXMax(final double plotXMax) {
         this.plotXMax = plotXMax;
     }
 
-    public void setPlotYMin(double plotYMin) {
+    public void setPlotYMin(final double plotYMin) {
         this.plotYMin = plotYMin;
     }
 
-    public void setPlotYMax(double plotYMax) {
+    public void setPlotYMax(final double plotYMax) {
         this.plotYMax = plotYMax;
     }
 
-    public void setPlotOffsetDefault(double plotOffsetDefault) {
+    public void setPlotOffsetDefault(final double plotOffsetDefault) {
         this.plotOffsetDefault = plotOffsetDefault;
     }
 
-    public void setPlotOffsetComputing(double plotOffsetComputing) {
+    public void setPlotOffsetComputing(final double plotOffsetComputing) {
         this.plotOffsetComputing = plotOffsetComputing;
     }
 
-    public void setPlotBoundsComputed(boolean plotBoundsComputed) {
+    public void setPlotBoundsComputed(final boolean plotBoundsComputed) {
         this.plotBoundsComputed = plotBoundsComputed;
     }
 
-    public void setPlotBoundsComputefactor(double plotBoundsComputefactor) {
+    public void setPlotBoundsComputefactor(final double plotBoundsComputefactor) {
         this.plotBoundsComputefactor = plotBoundsComputefactor;
     }
 
-    public void setFunctionsArguments(List<String> functionsArguments) {
+    public void setFunctionsArguments(final List<String> functionsArguments) {
         this.functionsArguments = functionsArguments;
     }
 
-    public void addFunctionsArgument(String arg) {
+    public void addFunctionsArgument(final String arg) {
 
         functionsArguments.add(arg);
 
@@ -344,7 +359,8 @@ public class Settings {
 
     @Override
     public String toString() {
-        StringBuilder r = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        final @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
+        StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"//NOPMD
                 + "<settings>\n"
                 + "\t<plot>\n"
                 + "\t\t<xmin>" + plotXMin + "</xmin>\n"
@@ -363,10 +379,14 @@ public class Settings {
                 + "\t<functions>\n"
                 + "\t\t<arguments>\n");
 
-        for (String arg : functionsArguments) r.append("\t\t\t<argument>").append(arg).append("</argument>\n");
+        for (final String arg : functionsArguments) {
+            stringBuilder.append("\t\t\t<argument>")
+                    .append(arg)
+                    .append("</argument>\n");
+        }
 
-        r.append("\t\t</arguments>\n" + "\t</functions>\n" + "</settings>\n");
+        stringBuilder.append("\t\t</arguments>\n" + "\t</functions>\n" + "</settings>\n");
 
-        return r.toString();
+        return stringBuilder.toString();
     }
 }

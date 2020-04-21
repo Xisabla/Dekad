@@ -10,16 +10,19 @@ import java.io.IOException;
 
 public class App extends VBox {
 
-    private DekadApp app;
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
+    private final transient DekadApp app;
 
     @FXML
-    private HBox container;
+    private transient HBox container;
 
-    public App(DekadApp app) {
+    public App(final DekadApp app) {
+
+        super();
 
         this.app = app;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/app.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/app.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

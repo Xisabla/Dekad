@@ -10,16 +10,18 @@ import java.io.IOException;
 
 public class Menu extends AnchorPane {
 
-    private DekadApp app;
+    private final transient DekadApp app;
 
     @FXML
-    private CheckMenuItem computedBoundsCheckbox;
+    private transient CheckMenuItem computedBoundsCheckbox;
 
-    public Menu(DekadApp app) {
+    public Menu(final DekadApp app) {
+
+        super();
 
         this.app = app;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/menu.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/menu.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -48,7 +50,7 @@ public class Menu extends AnchorPane {
 
     }
 
-    public void setComputedBounds(boolean value) {
+    public void setComputedBounds(final boolean value) {
 
         computedBoundsCheckbox.setSelected(value);
         app.settings().setPlotBoundsComputed(value);
