@@ -1,5 +1,6 @@
 package dekad.controllers;
 
+import dekad.core.DekadApp;
 import dekad.models.MathFunction;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,46 +13,46 @@ import java.io.IOException;
 
 public class Function extends VBox {
 
-    public static int fncCnt = 0;
+    private final transient DekadApp app;
 
-    private final int id;
+    private transient int functionId;
 
-    private final FunctionsPaneController parentController;
+    private transient MathFunction mathFunction;
 
-    private MathFunction mathFunction;
+    private transient boolean show;
 
-    private boolean show;
+    private static int counter = 1;
 
-    @FXML
-    private Text functionName;
-
-    @FXML
-    private TextField functionExpression;
+    // TODO: Add color management
 
     @FXML
-    private Button showHideButton;
+    private transient Text functionName;
 
-    // TODO: Add a color field and a Button to edit the color
+    @FXML
+    private transient TextField functionExpression;
 
-    public Function(FunctionsPaneController parentController, MathFunction mathFunction) {
+    @FXML
+    private transient Button showHideButton;
 
-        this.parentController = parentController;
-        this.mathFunction = mathFunction;
+    public Function(final DekadApp app, final MathFunction mathFunction) {
+
+        super();
+
+        this.app = app;
         this.show = true;
+        this.mathFunction = mathFunction;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/function.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/function.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
-        // Try to load the Function fxml element
         try {
             fxmlLoader.load();
 
-            id = ++fncCnt;
+            this.functionId = counter++;
 
-            // Set it's name it's function's text
-            functionName.setText(String.format("f%d(%s) = ", id, mathFunction.getArg()));
+            functionName.setText(String.format("f%d(%s) = ", functionId, mathFunction.getArg()));
             functionExpression.setText(mathFunction.getExpression().getExpressionString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,58 +60,41 @@ public class Function extends VBox {
 
     }
 
-    public int getFId() {
-
-        return id;
-
-    }
-
     public MathFunction getMathFunction() {
-
         return mathFunction;
-
     }
 
     public boolean doesShow() {
-
         return show;
-
     }
 
     public void update() {
-        MathFunction mathFunction = new MathFunction(functionExpression.getText());
+        final MathFunction mathFunction = new MathFunction(functionExpression.getText());
 
         if(mathFunction.isValid()) {
             functionExpression.setStyle("");
-            this.mathFunction = mathFunction;
-            functionName.setText(String.format("f%d(%s) = ", id, mathFunction.getArg()));
 
-            parentController.updateFunctions();
+            this.mathFunction = mathFunction;
+            functionName.setText(String.format("f%d(%s) = ", functionId, mathFunction.getArg()));
+
+            app.getFunctionsPane().update();
         } else {
             functionExpression.setStyle("-fx-border-color: red");
         }
-
     }
 
     public void showHide() {
-
-
         show = !show;
-
         showHideButton.setText(show ? "Hide" : "Show");
-
-        parentController.updateFunctions();
-
+        app.getFunctionsPane().update();
     }
 
     public void changeParameter() {
-        // TODO: Do (open a popup to change the parameter and also the expression)
+        // TODO: Open a window to set the parameter
     }
 
     public void remove() {
-
-        parentController.remove(this);
-
+        app.getFunctionsPane().remove(this);
     }
 
 }
