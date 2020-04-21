@@ -1,5 +1,6 @@
 package dekad.models;
 
+import dekad.controllers.Function;
 import javafx.scene.chart.XYChart;
 
 public class GraphManager {
@@ -20,8 +21,9 @@ public class GraphManager {
         this.offset = offset;
     }
 
-    public void plot(final MathFunction mathFunction, final double min, final double max) {
+    public void plot(final Function function, final double min, final double max) {
 
+        MathFunction mathFunction = function.getMathFunction();
         final XYChart.Series<Double, Double> series = new XYChart.Series<>();
 
         for (double x = min; x <= max; x += offset) {

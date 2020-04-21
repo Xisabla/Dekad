@@ -5,8 +5,6 @@ import org.mariuszgromada.math.mxparser.Expression;
 
 public class MathFunction {
 
-    // TODO: Add a color field
-
     private Expression expression;
 
     private String arg;

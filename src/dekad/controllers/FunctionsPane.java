@@ -48,7 +48,7 @@ public class FunctionsPane extends VBox {
             functionsList.getChildren().add(function);
             update();
         } /*else {
-            // TODO: Do something here
+            // TODO: Open a window, to tell a user there's something wrong.
         }*/
 
     }
@@ -65,7 +65,7 @@ public class FunctionsPane extends VBox {
             if(child instanceof Function) {
                 Function function = (Function) child;
 
-                if(function.doesShow()) app.getGraph().addFunctions(function.getMathFunction());
+                app.getGraph().addFunctions(function);
             }
         }
 

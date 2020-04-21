@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class Function extends VBox {
 
+
     private DekadApp app;
 
     private int functionId;
@@ -22,6 +23,8 @@ public class Function extends VBox {
     private boolean show;
 
     private static int counter = 1;
+
+    // TODO: Add color management
 
     @FXML
     private Text functionName;

@@ -26,7 +26,7 @@ public class Graph extends VBox {
     /**
      * Functions list of the graph
      */
-    private List<MathFunction> functions;
+    private List<Function> functions;
 
     /**
      * Graph main data
@@ -89,7 +89,7 @@ public class Graph extends VBox {
 
     }
 
-    public void addFunctions(MathFunction function) {
+    public void addFunctions(Function function) {
         functions.add(function);
     }
 
@@ -98,7 +98,7 @@ public class Graph extends VBox {
         graphManager.clear();
     }
 
-    public void setFunctions(List<MathFunction> functions) {
+    public void setFunctions(List<Function> functions) {
         this.functions = functions;
     }
 
@@ -143,8 +143,8 @@ public class Graph extends VBox {
 
     public void plot() {
 
-        for (final MathFunction function : functions) {
-            graphManager.plot(function, xMin, xMax);
+        for (final Function function : functions) {
+            if(function.doesShow()) graphManager.plot(function, xMin, xMax);
         }
 
     }
@@ -174,7 +174,7 @@ public class Graph extends VBox {
 
                 for (double x = xMin; x <= xMax; x += graphManager.getOffset()) {
 
-                    final double y = functions.get(i).eval(x);
+                    final double y = functions.get(i).getMathFunction().eval(x);
 
                     if (y > max.get(i)) max.set(i, y);
                     if (y < min.get(i)) min.set(i, y);

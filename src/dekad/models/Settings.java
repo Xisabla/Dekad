@@ -18,6 +18,7 @@ import java.util.List;
 
 import static java.lang.Double.*;
 
+@SuppressWarnings("PMD.GodClass")
 public class Settings {
 
     // File
