@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.CheckMenuItem?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="dekad.controllers.MenuController"
-            prefHeight="25" prefWidth="1920">
+<fx:root type="AnchorPane"
+         xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         prefHeight="25" prefWidth="1920">
 
     <MenuBar prefHeight="25" prefWidth="1920">
 
@@ -34,8 +37,8 @@
         </Menu>-->
 
         <Menu text="Settings">
-            <CheckMenuItem fx:id="computedYBoundsCheckbox" text="Computed Y Bounds" onAction="#toggleComputedYBounds"/>
-            <MenuItem text="Reset bounds to preset" onAction="#resetBounds"/>
+            <CheckMenuItem fx:id="computedBoundsCheckbox" text="Computed Y Bounds" onAction="#toggleComputedBounds"/>
+            <MenuItem text="Reset bounds to default" onAction="#resetBounds"/>
             <!--<MenuItem text="Preference"/>-->
             <!-- TODO: Bounds preset -->
         </Menu>
@@ -49,4 +52,5 @@
 
     </MenuBar>
 
-</AnchorPane>
+
+</fx:root>

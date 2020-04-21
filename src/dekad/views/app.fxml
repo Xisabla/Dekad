@@ -2,17 +2,14 @@
 
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dekad.controllers.AppController"
-      prefHeight="1000" prefWidth="1920">
+<fx:root type="VBox"
+         xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         prefHeight="1000" prefWidth="1920">
 
-    <fx:include source="menu.fxml"/>
+    <!-- Menu will be happened here -->
 
-    <HBox prefHeight="975">
-
-        <fx:include source="functionsPane.fxml"/>
-        <fx:include source="graph.fxml"/>
-
+    <HBox fx:id="container" prefHeight="975">
+        <!-- Will contain functionspane and graph -->
     </HBox>
-</VBox>
+</fx:root>

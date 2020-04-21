@@ -1,35 +1,27 @@
 package dekad.controllers;
 
-import dekad.core.Graph;
-import dekad.core.App;
-import dekad.models.GraphConfig;
+import dekad.core.DekadApp;
+import dekad.models.GraphManager;
 import dekad.models.MathFunction;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.VBox;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import static java.lang.Double.*;
+import static java.lang.Double.NaN;
+import static java.lang.Double.isNaN;
 
-public class GraphController implements Initializable {
+public class Graph extends VBox {
 
-    /**
-     *
-     */
-    private final GraphConfig graphConfig = App.graphConfig;
-
-    /**
-     * Allow other classes to catch the GraphController
-     */
-    public static GraphController graphController;
+    private DekadApp app;
 
     /**
      * Functions list of the graph
@@ -43,7 +35,7 @@ public class GraphController implements Initializable {
     private double xMax;
     private double yMin;
     private double yMax;
-    private Graph graph;
+    private GraphManager graphManager;
 
     /**
      * Drag behavior
@@ -60,45 +52,54 @@ public class GraphController implements Initializable {
     @FXML
     private NumberAxis yAxis;
 
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
+    public Graph(DekadApp app) {
 
-        // Set Controller available
-        graphController = this;
-        App.updateControllers();
+        this.app = app;
 
-        // Initialize Graph
-        graph = Graph.getInstance(chart);
-        functions = new ArrayList<>();
-        graph.setOffset(graphConfig.getOffset());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/graph.fxml"));
 
-        xMin = graphConfig.getXMin();
-        xMax = graphConfig.getXMax();
-        yMin = graphConfig.getYMin();
-        yMax = graphConfig.getYMax();
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
 
-        updateBounds();
-        update();
+        try {
+            fxmlLoader.load();
 
-        // Set event handlers
-        chart.setOnMouseDragged(this::handleChartMouseDragged);
-        chart.setOnMouseReleased(this::handleChartMouseRelease);
-        chart.setOnScroll(this::handleChartScroll);
+            app.setGraph(this);
 
-        System.out.println("Graph Controller loaded.");
+            // Initialize graph
+            graphManager = new GraphManager(chart);
+            graphManager.setOffset(app.settings().getPlotOffsetDefault());
+
+            // Initialize main data
+            functions = new ArrayList<>();
+            xMin = app.settings().getPlotXMin();
+            xMax = app.settings().getPlotXMax();
+            yMin = app.settings().getPlotYMin();
+            yMax = app.settings().getPlotYMax();
+
+            update();
+
+            // Set event handlers
+            chart.setOnMouseDragged(this::handleChartMouseDragged);
+            chart.setOnMouseReleased(this::handleChartMouseRelease);
+            chart.setOnScroll(this::handleChartScroll);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    public void addFunction(final MathFunction function) {
-
+    public void addFunctions(MathFunction function) {
         functions.add(function);
-
     }
 
-    public void clearFunctions() {
-
+    public void clear() {
         functions.clear();
+        graphManager.clear();
+    }
 
+    public void setFunctions(List<MathFunction> functions) {
+        this.functions = functions;
     }
 
     public void setBounds(double xMin, double xMax, double yMin, double yMax) {
@@ -112,10 +113,25 @@ public class GraphController implements Initializable {
 
     }
 
-    public void updateBounds() {
+    public void update() {
+        update(true);
+    }
 
-        if (graphConfig.hasComputedYBounds()) {
-            computeYBounds();
+    public void update(boolean doesComputeOffset) {
+
+        graphManager.clear();
+        bindBounds();
+
+        if(doesComputeOffset) computeOffset();
+
+        plot();
+
+    }
+
+    public void bindBounds() {
+
+        if(app.settings().isPlotBoundsComputed()) {
+            computeBounds();
         }
 
         xAxis.setLowerBound(xMin);
@@ -125,39 +141,21 @@ public class GraphController implements Initializable {
 
     }
 
-    public void updateFunctions() {
+    public void plot() {
 
-        // Plot each functions
         for (final MathFunction function : functions) {
-            graph.plot(function, xMin, xMax);
+            graphManager.plot(function, xMin, xMax);
         }
 
     }
 
-    public void update() {
-        // TODO: GraphConfig.doesComputeOffset()
-        update(true);
-
-    }
-
-    public void update(boolean doesComputeOffset) {
-
-        graph.clear();
-        updateBounds();
-
-        if (doesComputeOffset) computeOffset();
-
-        updateFunctions();
-
-    }
-
-    private void computeYBounds() {
+    private void computeBounds() {
 
         // Just reset if there is not functions
         if (functions.isEmpty()) {
 
-            yMin = graphConfig.getYMin();
-            yMax = graphConfig.getYMax();
+            yMin = app.settings().getPlotYMin();
+            yMax = app.settings().getPlotYMax();
 
         } else {
 
@@ -174,7 +172,7 @@ public class GraphController implements Initializable {
             // Get the min and the max of each functions
             for (int i = 0; i < functions.size(); i++) {
 
-                for (double x = xMin; x <= xMax; x += graph.getOffset()) {
+                for (double x = xMin; x <= xMax; x += graphManager.getOffset()) {
 
                     final double y = functions.get(i).eval(x);
 
@@ -186,8 +184,8 @@ public class GraphController implements Initializable {
             }
 
             // Choose to focus and the "smallest" function
-            yMax = Collections.min(max) * graphConfig.getComputedYBoundsFactor();
-            yMin = Collections.max(min) * graphConfig.getComputedYBoundsFactor();
+            yMax = Collections.min(max) * app.settings().getPlotBoundsComputefactor();
+            yMin = Collections.max(min) * app.settings().getPlotBoundsComputefactor();
 
         }
 
@@ -195,21 +193,21 @@ public class GraphController implements Initializable {
 
     private void computeOffset() {
 
-        double offset = graph.getOffset();
+        double offset = graphManager.getOffset();
 
         // Compute ratio
-        double baseWidth = graphConfig.getYMax() - graphConfig.getXMin();
+        double baseWidth = app.settings().getPlotXMax() - app.settings().getPlotXMin();
         double currentWidth = xMax - xMin;
         double ratio = currentWidth / baseWidth;
 
         // Update offset
-        graph.setOffset(graphConfig.getOffset() * ratio);
+        graphManager.setOffset(app.settings().getPlotOffsetDefault() * ratio);
 
     }
 
     private void handleChartMouseDragged(MouseEvent event) {
 
-        if (!isNaN(lastDragX)) {
+        if (!isNaN(lastDragX) && !isNaN(lastDragY)) {
             // Remove the axis width (~= 0.05% of the total chart width)
             double chartWidth = chart.getWidth() * 0.95;
             double chartHeight = chart.getHeight() * 0.95;
@@ -228,8 +226,8 @@ public class GraphController implements Initializable {
             double graphDiffY = chartDiffY * heightRatio;
 
             // Lower the precision during the process to avoid lags
-            double baseOffset = graph.getOffset();
-            graph.setOffset(baseOffset * graphConfig.getComputingOffsetRatio());
+            double baseOffset = graphManager.getOffset();
+            graphManager.setOffset(app.settings().getPlotOffsetComputing());
 
             // Move the bounds
             xMin += graphDiffX;
@@ -241,12 +239,12 @@ public class GraphController implements Initializable {
             update(false);
 
             // Reset the base offset
-            graph.setOffset(baseOffset);
+            graphManager.setOffset(baseOffset);
 
         } else {
 
             // Automatically disable Auto Y Bounds
-            App.menuController.forceComputedYBounds(false);
+            app.getMenu().setComputedBounds(false);
 
         }
 
@@ -266,10 +264,9 @@ public class GraphController implements Initializable {
 
     private void handleChartScroll(ScrollEvent event) {
 
-        // Dont compute bounds
-        App.menuController.forceComputedYBounds(false);
+        app.getMenu().setComputedBounds(false);
 
-        // TODO: Replace 0.7 by GraphConfig.getZoomRatio()
+        // TODO: Replace 0.7 by settings().getPlotBoundsZoomratio();
         if (event.getDeltaY() > 0) {
             // Zoom in
             xMin *= 0.7;

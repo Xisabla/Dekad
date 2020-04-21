@@ -5,10 +5,10 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.Cursor?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dekad.controllers.GraphController"
-      prefHeight="975" prefWidth="1400">
+<fx:root type="VBox"
+         xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         prefHeight="975" prefWidth="1400">
 
     <LineChart fx:id="chart"
                createSymbols="false"
@@ -30,4 +30,4 @@
 
     </LineChart>
 
-</VBox>
+</fx:root>
