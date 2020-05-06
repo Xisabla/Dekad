@@ -5,6 +5,7 @@ import dekad.models.MathFunction;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -49,9 +50,17 @@ public class FunctionsPane extends VBox {
             final Function function = new Function(app, mathFunction);
             functionsList.getChildren().add(function);
             update();
-        } /*else {
-            // TODO: Open a window, to tell a user there's something wrong.
-        }*/
+        } else {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+
+            alert.setTitle("Invalid expression");
+            alert.setHeaderText("The expression you entered seems to be invalid.");
+            alert.setContentText("Error details:\n" +mathFunction.getExpression().getErrorMessage());
+
+            alert.show();
+
+        }
 
     }
 

@@ -89,8 +89,10 @@ public class Function extends VBox {
         app.getFunctionsPane().update();
     }
 
-    public void changeParameter() {
-        // TODO: Open a window to set the parameter
+    public void derivate() {
+        // TODO: Derivate
+        // Option 1: Create a derivate instruction to parse e.g: "deriv(f1)", "5*deriv(f1)+2", ...
+        // Option 2: Use a boolean flag "derivate", if on true, plot derivate of the function while plotting the function
     }
 
     public void remove() {

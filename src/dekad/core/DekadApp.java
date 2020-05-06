@@ -26,10 +26,9 @@ public class DekadApp extends Application {
     public void start(final Stage primaryStage) throws IOException {
 
         // Settings
-        final String defaultSettingsFile = getClass().getResource("/dekad/data/settings.xml").getFile();
-        final String settingsFile = Paths.get("./settings.xml").toAbsolutePath().normalize().toString();
+        final String settingsFile = Paths.get(System.getProperty("user.home") + "\\dekad.xml").toAbsolutePath().normalize().toString();
+        settings = Settings.readOrGenerate(settingsFile);
 
-        settings = Settings.readOrGenerate(settingsFile, defaultSettingsFile);
 
         // Scene
         final Parent root = new App(this);

@@ -25,7 +25,7 @@ import static java.lang.Double.*;
 public class Settings {
 
     // File
-    private final transient String settingsFile;
+    private transient String settingsFile;
 
     // plot
     private double plotXMin;
@@ -43,6 +43,10 @@ public class Settings {
 
     // functions
     private List<String> functionsArguments;
+
+    public Settings() {
+        setDefault();
+    }
 
     public Settings(final String filename) {
         this.settingsFile = filename;
@@ -93,12 +97,12 @@ public class Settings {
     }
 
     // Read
-    static public Settings readOrGenerate(final String filename, final String defaultSettingsFile) {
+    static public Settings readOrGenerate(final String filename) {
 
         final File f = new File(filename);
 
         if (!f.exists()) {
-            final Settings temp = new Settings(defaultSettingsFile);
+            final Settings temp = new Settings();
             temp.write(filename);
         }
 
