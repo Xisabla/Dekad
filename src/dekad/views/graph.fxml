@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.Cursor?>
 
-<fx:root type="VBox"
-         xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml"
-         prefHeight="975" prefWidth="1400">
+<fx:root prefHeight="975" prefWidth="1400" type="VBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-    <LineChart fx:id="chart"
-               createSymbols="false"
-               legendVisible="false"
-               animated="false"
-               prefHeight="975" prefWidth="1400">
+    <LineChart fx:id="chart" animated="false" createSymbols="false" legendVisible="false" prefHeight="975" prefWidth="1400">
 
         <xAxis>
-            <NumberAxis fx:id="xAxis" autoRanging="false" side="BOTTOM"/>
+            <NumberAxis autoRanging="false" side="BOTTOM" fx:id="xAxis" />
         </xAxis>
 
         <yAxis>
-            <NumberAxis fx:id="yAxis" autoRanging="false" side="LEFT"/>
+            <NumberAxis fx:id="yAxis" autoRanging="false" side="LEFT" />
         </yAxis>
 
         <cursor>
-            <Cursor fx:constant="CROSSHAIR"/>
+            <Cursor fx:constant="CROSSHAIR" />
         </cursor>
 
     </LineChart>
