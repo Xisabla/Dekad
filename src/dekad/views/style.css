@@ -1,0 +1,94 @@
+
+/*White Backgrounds*/
+.menu-bar, VBox, .chart-plot-background, .root{
+    -fx-background-color: #FFFFFF;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 14px;
+}
+
+/*Blue Accent on Menu Bar*/
+.menu-item:hover,.menu-bar:focused,.menu-item:hover, .menu-item:focused, .menu:hover, .menu:focused, .menu:showing {
+    -fx-background-color: #4B81E8;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-border-width: 1px;
+    -fx-border-color: #4B81E8;
+    -fx-padding: 0em 0em 0em 0em; /* 4 1 8 1 */
+}
+
+/*Scroll Bar on Function Panel*/
+.list-view,
+.scroll-pane,
+.scroll-pane > .viewport
+{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(#000000,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 0em;
+}
+
+/*General Buttons*/
+Button{
+    -fx-background-radius: 0em;
+    -fx-background-color: #CCCCCC;
+}
+Button:hover{
+    -fx-background-color: rgba(204,204,204,0.8);
+}
+
+/*"Add Function" Button*/
+.add-button{
+    -fx-background-color: #4B81E8;
+    -fx-font-size: 18;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-insets: 0 -0.6em 0 -0.35em;
+
+}
+.add-button:hover{
+    -fx-background-color: rgba(75,129,232,0.9);
+}
+.add-button:pressed{
+}
+
+/*Text Fields*/
+TextField{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 3;
+    -fx-border-color: #DDDDDD;
+}
+TextField:focused{
+
+}
