@@ -24,17 +24,17 @@
         </VBox.margin>
 
         <HBox>
-            <Text text="f(x) = " wrappingWidth="35.2890625">
+            <Text text="f(x) = " wrappingWidth="45">
             <font>
                <Font name="Roboto Light" size="14.0" />
             </font>
             <HBox.margin>
                <Insets top="10.0" />
             </HBox.margin></Text>
-            <TextField fx:id="functionField" onAction="#append" prefHeight="23.0" prefWidth="462.0" text="cos(x)/x" />
+            <TextField fx:id="functionField" onAction="#append" prefHeight="23.0" prefWidth="450.0" text="cos(x)" />
         </HBox>
 
-        <Button onAction="#append" prefWidth="400" styleClass="add-button" text="ADD FUNCTION">
+        <Button onAction="#append" prefWidth="490" styleClass="add-button" text="ADD FUNCTION">
             <VBox.margin>
                 <Insets top="10" />
             </VBox.margin>
