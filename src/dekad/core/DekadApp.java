@@ -28,7 +28,7 @@ public class DekadApp extends Application {
         // Settings
         final String settingsFile = Paths.get(System.getProperty("user.home") + "\\dekad.xml").toAbsolutePath().normalize().toString();
         settings = Settings.readOrGenerate(settingsFile);
-        String css = this.getClass().getResource("../views/style.css").toExternalForm();
+        String css = this.getClass().getResource("/dekad/views/style.css").toExternalForm();
 
         // Scene
         final Parent root = new App(this);

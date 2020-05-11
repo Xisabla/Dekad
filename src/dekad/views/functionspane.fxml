@@ -34,7 +34,7 @@
             <TextField fx:id="functionField" onAction="#append" prefHeight="23.0" prefWidth="450.0" text="cos(x)" />
         </HBox>
 
-        <Button onAction="#append" prefWidth="400" styleClass="add-button" text="ADD FUNCTION">
+        <Button onAction="#append" prefWidth="490" styleClass="add-button" text="ADD FUNCTION">
             <VBox.margin>
                 <Insets top="10" />
             </VBox.margin>
