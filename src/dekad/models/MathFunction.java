@@ -1,28 +1,26 @@
 package dekad.models;
 
-import dekad.controllers.App;
 import dekad.core.DekadApp;
 import org.mariuszgromada.math.mxparser.Argument;
-import org.mariuszgromada.math.mxparser.Expression;
 import org.mariuszgromada.math.mxparser.Function;
 
 public class MathFunction {
 
-    private String name;
+    private final String name;
 
-    private String expression;
+    private final String expression;
 
-    private Function function;
+    private final Function function;
 
-    private String arg;
+    private transient String arg;
 
-    public MathFunction(DekadApp app, final String expression, final int id) {
+    public MathFunction(final DekadApp app, final String expression, final int id) {
 
         this.name = "f" + id;
         this.expression = expression;
         this.arg = app.settings().getFunctionsArguments().get(0);
 
-        for(String possibleArg : app.settings().getFunctionsArguments()) {
+        for(final String possibleArg : app.settings().getFunctionsArguments()) {
 
             if(expression.contains(possibleArg)) {
                 this.arg = possibleArg;
