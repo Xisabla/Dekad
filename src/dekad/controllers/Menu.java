@@ -10,6 +10,11 @@ import java.io.IOException;
 
 public class Menu extends AnchorPane {
 
+    /**
+     * All controllers a containing the instance of the DekadApp,
+     *  it allows them to access to the other controllers and the settings
+     *  without using static members
+     */
     private final transient DekadApp app;
 
     @FXML

@@ -23,7 +23,7 @@ import static java.lang.Double.*;
 
 @SuppressWarnings("PMD.GodClass")
 /**
- * GodClass that stores all the settings value and allow to export/import/generate a settings file
+ * Store all the settings value and allow to export/import/generate a settings file
  */
 public class Settings {
 
@@ -370,7 +370,7 @@ public class Settings {
 
     /**
      * Read the settings > functions > arguments values from the functions element
-     * @param functions
+     * @param functions Functions element
      */
     private void readFunctionsArguments(final Element functions) {
 

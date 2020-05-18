@@ -14,6 +14,11 @@ import java.util.List;
 
 public class FunctionsPane extends VBox {
 
+    /**
+     * All controllers a containing the instance of the DekadApp,
+     *  it allows them to access to the other controllers and the settings
+     *  without using static members
+     */
     private final transient DekadApp app;
 
     @FXML
@@ -49,9 +54,9 @@ public class FunctionsPane extends VBox {
 
     }
 
-    public void append(String expression) {
+    public void append(final String expression) {
 
-        Function function = new Function(app, expression);
+        final Function function = new Function(app, expression);
         functionsList.getChildren().add(function);
 
         updateFunctionsMXFunctions();
@@ -64,7 +69,7 @@ public class FunctionsPane extends VBox {
 
             remove(function);
 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            final Alert alert = new Alert(Alert.AlertType.ERROR);
 
             alert.setTitle("Invalid expression");
             alert.setHeaderText("The expression you entered seems to be invalid.");
@@ -83,7 +88,7 @@ public class FunctionsPane extends VBox {
 
     public List<Function> getFunctions() {
 
-        List<Function> functions = new ArrayList<>();
+        final List<Function> functions = new ArrayList<>();
 
         for(final Node child : functionsList.getChildren()) {
             if(child instanceof Function) {
@@ -117,8 +122,6 @@ public class FunctionsPane extends VBox {
         for(final Function function : getFunctions()) {
 
             function.getMathFunction().getMxFunction().removeAllFunctions();
-
-            List<org.mariuszgromada.math.mxparser.Function> mXFunctions = new ArrayList<>();
 
             for(final Function otherFunction : getFunctions()) {
 
