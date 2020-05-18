@@ -8,6 +8,10 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+/**
+ * Menu Object that allow the other to changes preferences (updates Settings) or exit
+ * (more features coming one day?)
+ */
 public class Menu extends AnchorPane {
 
     /**
@@ -17,9 +21,16 @@ public class Menu extends AnchorPane {
      */
     private final transient DekadApp app;
 
+    /**
+     * JavaFX Checkbox to know if the Y bounds should auto compute
+     */
     @FXML
     private transient CheckMenuItem computedBoundsCheckbox;
 
+    /**
+     * Instantiate the Menu
+     * @param app DekadApp main instance
+     */
     public Menu(final DekadApp app) {
 
         super();
@@ -41,10 +52,17 @@ public class Menu extends AnchorPane {
 
     }
 
+    /**
+     * JavaFX trigger, quit the application
+     */
     public void exit() {
         System.exit(0);
     }
 
+    /**
+     * JavaFX trigger
+     * Toggle the computed bounds value relatively the status of the checkbox and then updates the graph
+     */
     public void toggleComputedBounds() {
 
         // TODO: [Priority:2]
@@ -55,6 +73,10 @@ public class Menu extends AnchorPane {
 
     }
 
+    /**
+     * Force the Y computed bounds status in settings, update checkbox and then update the graph
+     * @param value New value of the Y computed bounds status
+     */
     public void setComputedBounds(final boolean value) {
 
         computedBoundsCheckbox.setSelected(value);
@@ -63,6 +85,9 @@ public class Menu extends AnchorPane {
 
     }
 
+    /**
+     * Reset the bounds to the default one from the settings and then update the graph
+     */
     public void resetBounds() {
 
         setComputedBounds(false);

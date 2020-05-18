@@ -28,34 +28,52 @@ public class Graph extends VBox {
     private final transient DekadApp app;
 
     /**
-     * Functions list of the graph
+     * Functions list of the graph, they will all be plotted if they don't have to show tag on false
      */
     private transient List<Function> functions;
 
     /**
-     * Graph main data
+     * Graph bounds data, will be updated on bounds computing or on drag/zoom
      */
     private transient double xMin;
     private transient double xMax;
     private transient double yMin;
     private transient double yMax;
+
+    /**
+     * The GraphManager object that will plot the functions of the function list
+     */
     private transient GraphManager graphManager;
 
     /**
      * Drag behavior
+     * Stores the old position of the cursor on dragging to compute graph dragging
      */
     private transient double lastDragX = NaN;
     private transient double lastDragY = NaN;
 
+    /**
+     * JavaFX Chart on which the functions will be plotted
+     */
     @FXML
     private transient LineChart<Double, Double> chart;
 
+    /**
+     * JavaFX xAxis NumberAxis
+     */
     @FXML
     private transient NumberAxis xAxis;
 
+    /**
+     * JavaFX yAxis NumberAxis
+     */
     @FXML
     private transient NumberAxis yAxis;
 
+    /**
+     * Instantiate the Graph and initialize it's values and behavior
+     * @param app
+     */
     public Graph(final DekadApp app) {
 
         super();
@@ -95,34 +113,61 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Add a function to the function list
+     * @param function The Function to add
+     */
     public void addFunctions(final Function function) {
         functions.add(function);
     }
 
+    /**
+     * Remove all the functions from the list and clear the graph
+     */
     public void clear() {
         functions.clear();
         graphManager.clear();
     }
 
+    /**
+     * Never used, should be for overriding the function list/reset it
+     * @param functions New function list
+     */
     public void setFunctions(final List<Function> functions) {
         this.functions = functions;
     }
 
+    /**
+     * Sets the bounds of the axis of the graph with the given values
+     * @param xMin X lower bound
+     * @param xMax X upper bound
+     * @param yMin Y lower bound
+     * @param yMax Y upper bound
+     */
     public void setBounds(final double xMin, final double xMax, final double yMin, final double yMax) {
 
+        // Set the attributes
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
 
+        // Update change the bounds and updates the plot
         update();
 
     }
 
+    /**
+     * Default update, execute the main update with computingOffset as true
+     */
     public final void update() {
         update(true);
     }
 
+    /**
+     * Clears the graph and update the plot with functions in the list (also binds the bounds)
+     * @param doesComputeOffset if set on true, the graph will compute and set automatically the Y bounds
+     */
     public void update(final boolean doesComputeOffset) {
 
         graphManager.clear();
@@ -134,6 +179,10 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Set the binds of the xAxis and yAxis relatively to the values in attributes,
+     *  computes Y bounds if set on true in the settings
+     */
     public void bindBounds() {
 
         if(app.settings().isPlotBoundsComputed()) {
@@ -147,6 +196,9 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Plot all the functions on the graph through the GraphManager
+     */
     public void plot() {
 
         for (final Function function : functions) {
@@ -155,6 +207,9 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Compute and updates yMin and yMax relatively to the functions minimum values
+     */
     private void computeBounds() {
 
         // Just reset if there is not functions
@@ -197,6 +252,9 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Compute the offset between each point the have the same performance while being zoom or unzoomed
+     */
     private void computeOffset() {
 
         // Compute ratio
@@ -209,6 +267,10 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Handle mouse dragging on the graph, allows the graph to "move" on dragging
+     * @param event MouseEvent relative to the drag
+     */
     private void handleChartMouseDragged(final MouseEvent event) {
 
         if (isNaN(lastDragX) || isNaN(lastDragY)) {
@@ -258,6 +320,10 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Resets the variables on drag release
+     * @param event Mouse Event on drag release
+     */
     private void handleChartMouseRelease(final MouseEvent event) {
 
         // Reset lastDrag variables
@@ -267,6 +333,10 @@ public class Graph extends VBox {
 
     }
 
+    /**
+     * Handle the mouse scrolling on the graph, allows to zoom or unzoom the graph
+     * @param event Mouse ScrolleEvent
+     */
     private void handleChartScroll(final ScrollEvent event) {
 
         app.getMenu().setComputedBounds(false);
