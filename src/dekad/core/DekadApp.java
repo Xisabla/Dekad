@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * Main Application class
+ */
 public class DekadApp extends Application {
 
     // Main Controllers
@@ -30,7 +33,7 @@ public class DekadApp extends Application {
         settings = Settings.readOrGenerate(settingsFile);
 
         // Load the css
-        String css = this.getClass().getResource("/dekad/views/style.css").toExternalForm();
+        final String css = this.getClass().getResource("/dekad/views/style.css").toExternalForm();
 
         // Create the root, load it's css and *magic* let's show the app
         final Parent root = new App(this);
