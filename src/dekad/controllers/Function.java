@@ -18,13 +18,11 @@ public class Function extends VBox {
 
     private final transient int functionId;
 
-    // TODO: Remove
     private transient MathFunction mathFunction;
 
     private transient boolean show;
 
-
-    // TODO: Add color management
+    // TODO: [Priority:3] Add color management
 
     @FXML
     private transient Text functionName;
@@ -101,7 +99,7 @@ public class Function extends VBox {
                 mathFunction.getArg(),
                 mathFunction.getArg());
 
-        app.getFunctionsPane().doAppend(derivativeExpression);
+        app.getFunctionsPane().append(derivativeExpression);
 
     }
 

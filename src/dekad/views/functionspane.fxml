@@ -31,10 +31,10 @@
             <HBox.margin>
                <Insets top="10.0" />
             </HBox.margin></Text>
-            <TextField fx:id="functionField" onAction="#append" prefHeight="23.0" prefWidth="450.0" text="cos(x)" />
+            <TextField fx:id="functionField" onAction="#addFunction" prefHeight="23.0" prefWidth="450.0" text="cos(x)" />
         </HBox>
 
-        <Button onAction="#append" prefWidth="490" styleClass="add-button" text="ADD FUNCTION">
+        <Button onAction="#addFunction" prefWidth="490" styleClass="add-button" text="ADD FUNCTION">
             <VBox.margin>
                 <Insets top="10" />
             </VBox.margin>

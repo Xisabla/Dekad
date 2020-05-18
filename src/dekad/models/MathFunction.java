@@ -46,7 +46,7 @@ public class MathFunction {
         return arg;
     }
 
-    public Function getFunction() {
+    public Function getMxFunction() {
 
         return function;
 

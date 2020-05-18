@@ -43,13 +43,13 @@ public class FunctionsPane extends VBox {
 
     }
 
-    public void append() {
+    public void addFunction() {
 
-        doAppend(functionField.getText());
+        append(functionField.getText());
 
     }
 
-    public void doAppend(String expression) {
+    public void append(String expression) {
 
         Function function = new Function(app, expression);
         functionsList.getChildren().add(function);
@@ -68,7 +68,7 @@ public class FunctionsPane extends VBox {
 
             alert.setTitle("Invalid expression");
             alert.setHeaderText("The expression you entered seems to be invalid.");
-            alert.setContentText("Error details:\n" + function.getMathFunction().getFunction().getErrorMessage());
+            alert.setContentText("Error details:\n" + function.getMathFunction().getMxFunction().getErrorMessage());
 
             alert.show();
 
@@ -112,9 +112,11 @@ public class FunctionsPane extends VBox {
 
     public void updateFunctionsMXFunctions() {
 
+        // TODO: I do need to comment this
+
         for(final Function function : getFunctions()) {
 
-            function.getMathFunction().getFunction().removeAllFunctions();
+            function.getMathFunction().getMxFunction().removeAllFunctions();
 
             List<org.mariuszgromada.math.mxparser.Function> mXFunctions = new ArrayList<>();
 
@@ -122,7 +124,7 @@ public class FunctionsPane extends VBox {
 
                 if(!otherFunction.getMathFunction().getName().equals(function.getMathFunction().getName())) {
 
-                    function.getMathFunction().getFunction().addFunctions(otherFunction.getMathFunction().getFunction());
+                    function.getMathFunction().getMxFunction().addFunctions(otherFunction.getMathFunction().getMxFunction());
 
                 }
 

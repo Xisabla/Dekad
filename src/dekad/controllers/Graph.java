@@ -266,7 +266,7 @@ public class Graph extends VBox {
 
         app.getMenu().setComputedBounds(false);
 
-        // TODO: Replace 0.7 by settings().getPlotBoundsZoomratio();
+        // TODO: [Priority:2] Replace 0.7 by settings().getPlotBoundsZoomratio();
         if (event.getDeltaY() > 0) {
             // Zoom in
             xMin *= 0.7;

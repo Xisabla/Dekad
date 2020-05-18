@@ -42,7 +42,7 @@ public class Menu extends AnchorPane {
 
     public void toggleComputedBounds() {
 
-        // TODO:
+        // TODO: [Priority:2]
         //  - On enter computedBounds: store old bounds
         //  - On leave: restore old  bounds
         app.settings().setPlotBoundsComputed(computedBoundsCheckbox.isSelected());

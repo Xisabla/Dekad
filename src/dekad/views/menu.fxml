@@ -40,7 +40,6 @@
             <CheckMenuItem fx:id="computedBoundsCheckbox" text="Computed Y Bounds" onAction="#toggleComputedBounds"/>
             <MenuItem text="Reset bounds to default" onAction="#resetBounds"/>
             <!--<MenuItem text="Preference"/>-->
-            <!-- TODO: Bounds preset -->
         </Menu>
 
         <!--
