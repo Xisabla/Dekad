@@ -1,52 +1,74 @@
 package dekad.models;
 
+import dekad.controllers.App;
+import dekad.core.DekadApp;
 import org.mariuszgromada.math.mxparser.Argument;
 import org.mariuszgromada.math.mxparser.Expression;
+import org.mariuszgromada.math.mxparser.Function;
 
 public class MathFunction {
 
-    private Expression expression;
+    private String name;
+
+    private String expression;
+
+    private Function function;
 
     private String arg;
 
-    public MathFunction(final String functionText) {
+    public MathFunction(DekadApp app, final String expression, final int id) {
 
-        this.arg = "x";
-
-        if (functionText.contains("t")) arg = "t";
-
-        final Argument argument = new Argument(arg);
-        this.expression = new Expression(functionText, argument);
-
-    }
-
-    public Expression getExpression() {
-        return expression;
-    }
-
-    public void setExpression(final Expression expression) {
+        this.name = "f" + id;
         this.expression = expression;
+        this.arg = app.settings().getFunctionsArguments().get(0);
+
+        for(String possibleArg : app.settings().getFunctionsArguments()) {
+
+            if(expression.contains(possibleArg)) {
+                this.arg = possibleArg;
+            }
+
+        }
+
+        this.function = new Function(name, expression, arg);
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
     public String getArg() {
         return arg;
     }
 
+    public Function getFunction() {
+
+        return function;
+
+    }
+
     public void setArg(final String arg) {
+
+
         this.arg = arg;
+        function.removeAllArguments();
+        function.addArguments(new Argument(arg));
+
     }
 
     public Double eval(final Double value) {
 
-        expression.setArgumentValue(arg, value);
-
-        return expression.calculate();
-
+        return function.calculate(value);
     }
 
     public boolean isValid() {
 
-        return expression.checkLexSyntax() && expression.checkSyntax();
+        return function.checkSyntax();
 
     }
 

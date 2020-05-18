@@ -10,18 +10,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-
 public class Function extends VBox {
+
+    private static int counter = 1;
 
     private final transient DekadApp app;
 
-    private transient int functionId;
+    private final transient int functionId;
 
+    // TODO: Remove
     private transient MathFunction mathFunction;
 
     private transient boolean show;
 
-    private static int counter = 1;
 
     // TODO: Add color management
 
@@ -34,26 +35,28 @@ public class Function extends VBox {
     @FXML
     private transient Button showHideButton;
 
-    public Function(final DekadApp app, final MathFunction mathFunction) {
+    public Function(final DekadApp app, final String expression) {
 
         super();
 
         this.app = app;
         this.show = true;
-        this.mathFunction = mathFunction;
 
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/dekad/views/function.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
+        this.functionId = counter++;
+        this.mathFunction = new MathFunction(app, expression, functionId);
+
         try {
             fxmlLoader.load();
 
-            this.functionId = counter++;
+            functionExpression.setText(mathFunction.getExpression());
+            updateName();
 
-            functionName.setText(String.format("f%d(%s) = ", functionId, mathFunction.getArg()));
-            functionExpression.setText(mathFunction.getExpression().getExpressionString());
+            app.getFunctionsPane().updateFunctionsMXFunctions();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,18 +72,20 @@ public class Function extends VBox {
     }
 
     public void update() {
-        final MathFunction mathFunction = new MathFunction(functionExpression.getText());
+
+        final MathFunction mathFunction = new MathFunction(app, functionExpression.getText(), functionId);
 
         if(mathFunction.isValid()) {
             functionExpression.setStyle("");
 
             this.mathFunction = mathFunction;
-            functionName.setText(String.format("f%d(%s) = ", functionId, mathFunction.getArg()));
+            updateName();
 
             app.getFunctionsPane().update();
         } else {
             functionExpression.setStyle("-fx-border-color: red");
         }
+
     }
 
     public void showHide() {
@@ -89,14 +94,23 @@ public class Function extends VBox {
         app.getFunctionsPane().update();
     }
 
-    public void derivate() {
-        // TODO: Derivate
-        // Option 1: Create a derivate instruction to parse e.g: "deriv(f1)", "5*deriv(f1)+2", ...
-        // Option 2: Use a boolean flag "derivate", if on true, plot derivate of the function while plotting the function
+    public void derivative() {
+
+        String derivativeExpression = String.format("der(%s, %s, %s)",
+                functionExpression.getText(),
+                mathFunction.getArg(),
+                mathFunction.getArg());
+
+        app.getFunctionsPane().doAppend(derivativeExpression);
+
     }
 
     public void remove() {
         app.getFunctionsPane().remove(this);
+    }
+
+    private void updateName() {
+        functionName.setText(String.format("%s(%s) = ", mathFunction.getName(), mathFunction.getArg()));
     }
 
 }

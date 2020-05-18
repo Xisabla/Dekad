@@ -1,7 +1,6 @@
 package dekad.controllers;
 
 import dekad.core.DekadApp;
-import dekad.models.MathFunction;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FunctionsPane extends VBox {
 
@@ -44,19 +45,30 @@ public class FunctionsPane extends VBox {
 
     public void append() {
 
-        final MathFunction mathFunction = new MathFunction(functionField.getText());
+        doAppend(functionField.getText());
 
-        if(mathFunction.isValid()) {
-            final Function function = new Function(app, mathFunction);
-            functionsList.getChildren().add(function);
+    }
+
+    public void doAppend(String expression) {
+
+        Function function = new Function(app, expression);
+        functionsList.getChildren().add(function);
+
+        updateFunctionsMXFunctions();
+
+        if(function.getMathFunction().isValid()) {
+
             update();
+
         } else {
+
+            remove(function);
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
 
             alert.setTitle("Invalid expression");
             alert.setHeaderText("The expression you entered seems to be invalid.");
-            alert.setContentText("Error details:\n" +mathFunction.getExpression().getErrorMessage());
+            alert.setContentText("Error details:\n" + function.getMathFunction().getFunction().getErrorMessage());
 
             alert.show();
 
@@ -69,18 +81,55 @@ public class FunctionsPane extends VBox {
         update();
     }
 
-    public void update() {
-        app.getGraph().clear();
+    public List<Function> getFunctions() {
+
+        List<Function> functions = new ArrayList<>();
 
         for(final Node child : functionsList.getChildren()) {
             if(child instanceof Function) {
                 final Function function = (Function) child;
 
-                app.getGraph().addFunctions(function);
+                functions.add(function);
             }
         }
 
+        return functions;
+
+    }
+
+    public void update() {
+        app.getGraph().clear();
+        app.getFunctionsPane().updateFunctionsMXFunctions();
+
+        for(final Function function : getFunctions()) {
+
+            app.getGraph().addFunctions(function);
+        }
+
         app.getGraph().update();
+
+    }
+
+    public void updateFunctionsMXFunctions() {
+
+        for(final Function function : getFunctions()) {
+
+            function.getMathFunction().getFunction().removeAllFunctions();
+
+            List<org.mariuszgromada.math.mxparser.Function> mXFunctions = new ArrayList<>();
+
+            for(final Function otherFunction : getFunctions()) {
+
+                if(!otherFunction.getMathFunction().getName().equals(function.getMathFunction().getName())) {
+
+                    function.getMathFunction().getFunction().addFunctions(otherFunction.getMathFunction().getFunction());
+
+                }
+
+            }
+
+
+        }
 
     }
 

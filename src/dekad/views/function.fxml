@@ -43,7 +43,7 @@
             </HBox.margin>
         </Button>
 
-        <Button onAction="#derivate" text="(todo) Derivate">
+        <Button onAction="#derivative" text="Derivative">
             <HBox.margin>
                 <Insets left="5" right="5" />
             </HBox.margin>
