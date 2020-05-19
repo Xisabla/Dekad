@@ -12,7 +12,7 @@ Main entry: **dekad.core.DekadApp.main**
 
 ## Documentation
 
-Coming soon
+See the [wiki](https://github.com/Xisabla/Dekad/wiki)
 
 ## License
 
