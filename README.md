@@ -2,6 +2,10 @@
 
 Dekad is a Java school project using JavaFX to draw and compute some functions given by the user as inputs.
 
+## Running
+
+Check the [releases](https://github.com/Xisabla/Dekad/releases) page
+
 ## Requirements
 
 - Java 1.8 (1.8.0_221) or above
