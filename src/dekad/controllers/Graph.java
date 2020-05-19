@@ -341,20 +341,21 @@ public class Graph extends VBox {
 
         app.getMenu().setComputedBounds(false);
 
-        // TODO: [Priority:2] Replace 0.7 by settings().getPlotBoundsZoomratio();
+        double zoomRatio = app.settings().getPlotBoundsZoomRatio();
+
         if (event.getDeltaY() > 0) {
             // Zoom in
-            xMin *= 0.7;
-            xMax *= 0.7;
-            yMin *= 0.7;
-            yMax *= 0.7;
+            xMin *= zoomRatio;
+            xMax *= zoomRatio;
+            yMin *= zoomRatio;
+            yMax *= zoomRatio;
 
         } else {
             // Zoom out
-            xMin /= 0.7;
-            xMax /= 0.7;
-            yMin /= 0.7;
-            yMax /= 0.7;
+            xMin /= zoomRatio;
+            xMax /= zoomRatio;
+            yMin /= zoomRatio;
+            yMax /= zoomRatio;
 
         }
 

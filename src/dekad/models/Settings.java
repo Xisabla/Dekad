@@ -59,6 +59,11 @@ public class Settings {
     private double plotBoundsComputefactor;
 
     /**
+     * This value is used to compute the new bounds while zooming/unzooming
+     */
+    private double plotBoundsZoomRatio;
+
+    /**
      * List of all available arguments for a function
      * e.g: functionsArguments = [ "x", "t"],
      *  allowed: 2*x + 2,   e^t,   sin(x)
@@ -96,6 +101,7 @@ public class Settings {
         plotOffsetComputing = 0.4;
         plotBoundsComputed = false;
         plotBoundsComputefactor = 1.1;
+        plotBoundsZoomRatio = 0.7;
 
         functionsArguments = new ArrayList<>();
         functionsArguments.add("x");
@@ -338,6 +344,7 @@ public class Settings {
 
             readPlotBoundsComputed(bounds);
             readPlotBoundsComputefactor(bounds);
+            readPlotBoundsZoomRatio(bounds);
 
         }
 
@@ -365,6 +372,18 @@ public class Settings {
         final Element computeFactor = getLastChildNamed(bounds, "computeFactor");
 
         if (computeFactor != null) plotBoundsComputefactor = parseDouble(computeFactor.getTextContent());
+
+    }
+
+    /**
+     * Read the settings > plot > bounds > zoomRatio value from the bounds element
+     * @param bounds The bounds element
+     */
+    private void readPlotBoundsZoomRatio(final Element bounds) {
+
+        final Element zoomRatio = getLastChildNamed(bounds, "zoomRatio");
+
+        if(zoomRatio != null) plotBoundsZoomRatio = parseDouble(zoomRatio.getTextContent());
 
     }
 
@@ -428,6 +447,10 @@ public class Settings {
         return plotBoundsComputefactor;
     }
 
+    public double getPlotBoundsZoomRatio() {
+        return plotBoundsZoomRatio;
+    }
+
     public List<String> getFunctionsArguments() {
         return functionsArguments;
     }
@@ -466,6 +489,10 @@ public class Settings {
         this.plotBoundsComputefactor = plotBoundsComputefactor;
     }
 
+    public void setPlotBoundsZoomRatio(final double plotBoundsZoomRatio) {
+        this.plotBoundsZoomRatio = plotBoundsZoomRatio;
+    }
+
     public void setFunctionsArguments(final List<String> functionsArguments) {
         this.functionsArguments = functionsArguments;
     }
@@ -494,15 +521,16 @@ public class Settings {
                 + "\t\t<xmax>" + plotXMax + "</xmax>\n"
                 + "\t\t<ymin>" + plotYMin + "</ymin>\n"
                 + "\t\t<ymax>" + plotYMax + "</ymax>\n"
+                + "\t\t<offset>\n"
+                + "\t\t\t<default>" + plotOffsetDefault + "</default>\n"
+                + "\t\t\t<computing>" + plotOffsetComputing + "</computing>\n"
+                + "\t\t</offset>\n"
+                + "\t\t<bounds>\n"
+                + "\t\t\t<computed>" + plotBoundsComputed + "</computed>\n"
+                + "\t\t\t<computeFactor>" + plotBoundsComputefactor + "</computeFactor>\n"
+                + "\t\t\t<zoomRatio>" + plotBoundsZoomRatio + "</zoomRatio>\n"
+                + "\t\t</bounds>\n"
                 + "\t</plot>\n"
-                + "\t<offset>\n"
-                + "\t\t<default>" + plotOffsetDefault + "</default>\n"
-                + "\t\t<computing>" + plotOffsetComputing + "</computing>\n"
-                + "\t</offset>\n"
-                + "\t<bounds>\n"
-                + "\t\t<computed>" + plotBoundsComputed + "</computed>\n"
-                + "\t\t<computeFactor>" + plotBoundsComputefactor + "</computeFactor>\n"
-                + "\t</bounds>\n"
                 + "\t<functions>\n"
                 + "\t\t<arguments>\n");
 
